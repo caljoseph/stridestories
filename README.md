@@ -14,3 +14,5 @@ Welcome to QuickRunningBlog – a personalized running journal and leaderboard. 
 - Runs will be stored in the database connected to a unique user
 ### WebSocket Data
 - Realtime leaderboard updates. Currently thinking by rolling distance run for the current week
+## Mock:
+![Mockup](images/mock.jpeg)
