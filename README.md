@@ -16,3 +16,15 @@ Welcome to QuickRunningBlog – a personalized running journal and leaderboard. 
 - Realtime leaderboard updates. Currently thinking by rolling distance run for the current week
 ## Mock:
 ![Mockup](images/mock.jpeg)
+
+
+## HTML deliverable:
+I laid out the basic structure of the blog with this deliverable. 
+### Application data:
+    This is the blog body, with an entry for individual blog posts that will be queried from the database using the user's login credentials. Note the display of the user's name
+### Authentication:
+    UN/PW
+### Database data:
+    Mentioned above, the DB data is the individual's blog posts
+### WebSocket data: 
+    The leaderboards will be updated live when someone posts a new blog post. I added a section for PRs, this would increase the scope to having to set a 'race report' flag for each blog post
