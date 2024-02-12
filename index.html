@@ -2,49 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Tell browsers not to scale the viewport automatically -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stridestories</title>
     <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" type="text/css" href="font.css">
   </head>
   <body>
-    <!-- Use header, main, and footer elements to give semantic structure -->
     <header>
       <h1>Stridestories</h1>
 
-      <!-- Navigation elements -->
       <nav>
-        <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
-        <menu>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="blog.html">My Blog</a></li>
-          <li><a href="leaderboard.html">Leaderboard</a></li>
-          <li><a href="about.html">About</a></li>
-        </menu>
+        <ul class="menu-bar">
+          <li id="home"><a href="index.html">Home</a></li>
+          <li id="my-blog"><a href="blog.html">My Blog</a></li>
+          <li id="leaderboard"><a href="leaderboard.html">Leaderboard</a></li>
+          <li id="about"><a href="about.html">About</a></li>
+        </ul>
       </nav>
 
-      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
-      <hr />
     </header>
 
     <main>
-      <div id="picture" class="picture-box"><img width="200px" src="images/running.webp" alt="random" /></div>
 
-      <h1>Welcome</h1>
-      <p>Login to share your strides</p>
-      <form>
-        <label for="name">Username</label>
-        <input type="text" id="name" placeholder="Username" />
-      </form>
-      <form>
-        <label for="name">Password</label>
-        <input type="text" id="name" placeholder="Password" />
-        <button type="submit">Login</button>
-      </form>
+        <div id="login-box">
+          <form>
+            <h1>LOGIN</h1>
+            <div class="input-box">
+              <label for="name"></label>
+              <input type="text" id="name" placeholder="Username" />
+            </div>
+            <div class="input-box">
+              <label for="name"></label>
+              <input type="text" id="name" placeholder="Password" />
+            </div>
+            <div class="remember-forget">
+              <label><input type="checkbox">Remember me</input>
+              </label>
+              <a href="#">Forgot password?</a>
+            </div>
+            <div class="button-wrapper">
+              <button type="submit">LOGIN</button>
+            </div>
+            <div class="sign-up">
+              <label>Don't have an account?</label>
+              <a href="#">Register</a>
+            </div>
+            
+          </form>
+        </div>
     </main>
 
     <footer>
-      <hr />
+      
       <span class="text-reset">Caleb Bradshaw</span>
       <br />
       <a href="https://github.com/caljoseph/startup">GitHub</a>
