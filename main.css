@@ -14,11 +14,12 @@ header {
     border-bottom: 1px solid #ffdbc7;
 }
 header h1 {
+    margin:0;
     margin-left: 16px;
     color: #ffdbc7;
     font-style: italic;
     font-weight: 900;
-
+    
 }
 
 nav {
@@ -80,6 +81,7 @@ main {
     list-style: none;
     text-decoration: none;
     padding: 0;
+    margin:0;
 }
 .menu-bar li a{
     font-weight: bold;
@@ -91,6 +93,7 @@ main {
 }
 .menu-bar li {
     transition: all .2s ease-in-out;
+    margin: 0;
 }    
 #home:hover{
     transform: scale(1.1); 

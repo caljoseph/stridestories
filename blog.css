@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap:32px;
+    gap:16px;
     padding: 16px;
 }
 .blog-info {
@@ -69,24 +69,72 @@
     flex-direction: column;
     align-items: center;
     justify-content:flex-start;
+    gap: 32px;
 }
 .calendar {
-    background-color: greenyellow;
+    background-color: rgb(135, 83, 45);
+    border:5px solid white;
+    border-radius: 10px;
     width: 100%;
     min-height: 50px;
     flex: 0 1 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 5px 5px 10px 0px #333;
+    padding: 8px;
 }
+#prev-week,
+#next-week {
+    width: 20%;
+    margin-left: 2px;
+    background-color: #c07a3c;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    text-shadow: 1px 1px 0px black;
+    transition: background-color 0.3s ease; 
+    display: flex;
+    justify-content: center; align-items: center;
+}
+#prev-week p,
+#next-week p {
+    margin:0;
+    overflow: hidden; 
+    white-space: nowrap;
+}
+
+#prev-week:hover,
+#next-week:hover {
+    background-color: #e0915a; 
+}
+
+#prev-week:active,
+#next-week:active {
+    background-color: #a6632e; 
+}
+#next-week {
+    margin-right: 2px;
+}
+.calendar h3 {
+    margin: 0;
+    color: white;
+    text-shadow: 1px 1px 0px black;
+}
+
 .blog-content {
     display: flex;
     flex-direction: column;
-    flex-grow: 1 1 auto;
-    max-height: calc(100vh - 110px);
-    flex-grow: 1;
+    max-height: calc(100vh - 175px);
     overflow: auto;
-    max-height: calc(100vh - 180px);
-    padding-top: 16px;
+    gap: 16px;
+    align-items: center; /* Set to stretch or other values as needed */
+    padding-top: 8px;
+    padding-bottom: 16px;
 }
 .blog-entry {
+    align-self: right;
     background-color: #ffdbc7;
     display: flex;
     flex-direction: column;
@@ -96,6 +144,7 @@
     border-radius: 16px;
     box-shadow: 5px 5px 10px 0px #333;
     min-width: 260px;
+    width: 95%;
 }
 .entry-date-location {
     display: flex;
@@ -122,6 +171,7 @@
     color:rgb(135, 83, 45);
     font-size: 32px;
     margin:0;
+    padding-bottom: 4px;
 }
 .entry-description {
 
@@ -157,13 +207,17 @@
     background-color: #c07a3c;
     border: 5px solid white;
     color: white;
+    font-size: 24px;
+    padding:0;
 }
 #pace-info,
 #duration-info,
 #distance-info {
     background-color: #ffdbc7;
     border: 5px solid white;
+    font-weight: bold;
 }
+
 th, td {
     padding: 8px;
     text-align: center;
