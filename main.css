@@ -31,6 +31,7 @@ body {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    /* height: 100vh; */
 }
 footer {
     margin-top: auto;
@@ -65,10 +66,10 @@ main {
     );
     background-size: 60px 60px;
     background-repeat: repeat;
-    flex: 1 0 calc(100vh - 120px);
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 1 0 calc(100vh - 120px);
 }
 
 
