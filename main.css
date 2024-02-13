@@ -93,6 +93,7 @@ main {
     margin: 0 16px;
     color: #ffdbc7;
     transition: all .2s ease-in-out;
+    
 }
 .menu-bar li {
     transition: all .2s ease-in-out;

@@ -31,6 +31,8 @@
     height: 100%;
     text-align: center;
     border-bottom: 2px solid rgb(135, 83, 45);
+    text-shadow: 1px 1px 0px white, 1px -1px 0px white, -1px 1px 0px white, -1px -1px 0px white;
+
 }
 
 .blog-info h3 {
