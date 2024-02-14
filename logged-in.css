@@ -65,6 +65,7 @@ main {
     transform: scale(1.05);
 }
 
-.button-wrapper button:active {
+.button-wrapper button:active,
+#record:active {
     transform: scale(0.95);
 }
