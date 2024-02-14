@@ -14,50 +14,53 @@
     />
   </head>
   <body>
-    <header>
-      <h1>Stridestories</h1>
+    <div class="main-wrapper">
+      <header>
+        <h1>Stridestories</h1>
+  
+        <nav>
+          <ul class="menu-bar">
+            <li id="home"><a href="index.html">Home logged-out</a></li>
+            <li id="home"><a href="logged-in.html">Home logged-in</a></li>
+            <li id="my-blog"><a href="blog.html">My Blog</a></li>
+            <li id="leaderboard"><a href="leaderboard.html">Leaderboard</a></li>
+            <li id="about"><a href="about.html">About</a></li>
+          </ul>
+        </nav>
+  
+      </header>
+  
+      <main>
+  
+          <div id="login-box">
+            <form>
+              <h1>LOGIN</h1>
+              <div class="username-box">
+                <label for="name"></label>
+                <input type="text" id="name" placeholder="Username" />
+              </div>
+              <div class="password-box">
+                <label for="name"></label>
+                <input type="text" id="name" placeholder="Password" />
+              </div>
+              <div class="remember-forget">
+                <label><input type="checkbox">Remember me</input>
+                </label>
+                <a href="#">Forgot password?</a>
+              </div>
+              <div class="button-wrapper">
+                <button type="submit">LOGIN</button>
+              </div>
+              <div class="sign-up">
+                <label>Don't have an account?</label>
+                <a href="#">Register</a>
+              </div>
+              
+            </form>
+          </div>
+      </main>
+    </div>
 
-      <nav>
-        <ul class="menu-bar">
-          <li id="home"><a href="index.html">Home logged-out</a></li>
-          <li id="home"><a href="logged-in.html">Home logged-in</a></li>
-          <li id="my-blog"><a href="blog.html">My Blog</a></li>
-          <li id="leaderboard"><a href="leaderboard.html">Leaderboard</a></li>
-          <li id="about"><a href="about.html">About</a></li>
-        </ul>
-      </nav>
-
-    </header>
-
-    <main>
-
-        <div id="login-box">
-          <form>
-            <h1>LOGIN</h1>
-            <div class="username-box">
-              <label for="name"></label>
-              <input type="text" id="name" placeholder="Username" />
-            </div>
-            <div class="password-box">
-              <label for="name"></label>
-              <input type="text" id="name" placeholder="Password" />
-            </div>
-            <div class="remember-forget">
-              <label><input type="checkbox">Remember me</input>
-              </label>
-              <a href="#">Forgot password?</a>
-            </div>
-            <div class="button-wrapper">
-              <button type="submit">LOGIN</button>
-            </div>
-            <div class="sign-up">
-              <label>Don't have an account?</label>
-              <a href="#">Register</a>
-            </div>
-            
-          </form>
-        </div>
-    </main>
 
     <footer>
       

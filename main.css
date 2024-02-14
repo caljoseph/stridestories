@@ -32,22 +32,27 @@ nav {
 }
 body {
     display: flex;
-    justify-content: center;
+    margin:0;
     flex-direction: column;
-    /* height: 100vh; */
+    min-height: 100vh;
+    flex:1;
+}
+.main-wrapper {
+    flex:1;
+    display: flex;
+    flex-direction: column;
 }
 footer {
-    margin-top: auto;
     background-color: rgb(135, 83, 45);
     border-top: 1px solid #ffdbc7;
     display: flex;
-    flex: 0 30px;
     align-items: center;
     justify-content: space-between;
     padding: 4px;
     padding-left: 16px;
     padding-right: 16px;
     color: #ffdbc7;
+    margin-top: auto;
 }
 main {
     background-color: #ffdbc7;
@@ -72,8 +77,8 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1 0 calc(100vh - 110px);
     padding: 16px;;
+    flex: 1;
 }
 
 
