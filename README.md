@@ -30,7 +30,7 @@ I laid out the basic structure of the blog with this deliverable.
     The leaderboards will be updated live when someone posts a new blog post. I added a section for PRs, this would increase the scope to having to set a 'race report' flag for each blog post
 
 ## CSS deliverable:
-I learned an enormous amount about css and flex-box doing this deliverable
+    I learned an enormous amount about css and flex-box doing this deliverable
 ### Header, footer, and main content body
 I had to go through a couple of iterations to get the header main and footer to behave how I wanted. I learned about creating patterns and gradients for the main background of the application and styling different components with gradients.
 ### Navigation elements

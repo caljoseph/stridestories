@@ -10,12 +10,14 @@ main {
 }
 
 .calendar {
-    background-color: rgb(135, 83, 45);
+    /* background-color: rgb(135, 83, 45); */
+    background: -webkit-linear-gradient(rgb(170, 111, 68), rgb(135, 83, 45));
+
     border:5px solid white;
     border-radius: 10px;
     width: 100%;
     min-height: 50px;
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,11 +29,12 @@ main {
     width: 20%;
     margin-left: 2px;
     /* background-color: #c07a3c; */
-    background: -webkit-linear-gradient(#e0914c, #be7535);
+    background: #d18848;
     border: none;
     border-radius: 5px;
     padding: 5px;
     color: white;
+    
     transition: background-color 0.3s ease; 
     display: flex;
     justify-content: center; align-items: center;
@@ -45,15 +48,13 @@ main {
 
 #prev-week:hover,
 #next-week:hover {
-    /* background-color: #e0915a;  */
-    background: -webkit-linear-gradient(#e0915a, #e0915a);
+    background-color: #e0915a; 
 
 }
 
 #prev-week:active,
 #next-week:active {
     background-color: #a6632e; 
-    background: -webkit-linear-gradient(#a6632e, #a6632e);
 
 }
 #next-week {
@@ -62,7 +63,7 @@ main {
 .calendar h3 {
     margin: 0;
     color: white;
-    text-shadow: 1px 1px 0px black;
+    text-shadow: 1px 1px 0px rgb(85, 50, 25);
 }
 .leaderboard-body {
     height: 100%;
