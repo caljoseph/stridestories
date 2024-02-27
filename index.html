@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stridestories</title>
+    <script src="login.js"></script>
     <link rel="stylesheet" href="main.css"/>
     <link rel="stylesheet" type="text/css" href="font.css">
     <link
@@ -34,7 +35,7 @@
       <main>
   
           <div id="login-box">
-            <form>
+            <form onsubmit="return login()">
               <h1>LOGIN</h1>
               <div class="username-box">
                 <label for="name"></label>
@@ -42,7 +43,7 @@
               </div>
               <div class="password-box">
                 <label for="name"></label>
-                <input type="text" id="name" placeholder="Password" />
+                <input type="password" id="password" placeholder="Password" />
               </div>
               <div class="remember-forget">
                 <label><input type="checkbox">Remember me</input>
@@ -50,7 +51,7 @@
                 <a href="#">Forgot password?</a>
               </div>
               <div class="button-wrapper">
-                <button type="submit">LOGIN</button>
+                <button type="submit" onclick="login()">LOGIN</button>
               </div>
               <div class="sign-up">
                 <label>Don't have an account?</label>
