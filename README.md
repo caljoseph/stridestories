@@ -43,3 +43,13 @@ I laid out the basic structure of the blog with this deliverable.
     I generated some dummy data for my blog bio, posts and leaderboard rankings for the week
 ### Application images
     I don't think I'll keep the image on the about page in this same state forever, but it sure looks nice now!
+
+## Javascript deliverable:
+### Login Support
+    I'm currently saving usernames and passwords in localStorage. I display them on the welcome screen as well as attach the username to run records to segment each user's blog and properly credit each runner for their performance on the leaderboard
+### Future database data
+    I made a RunRecord class that has all the fields I need to populate a user's blog entries. I get this information on the Record screen and display it on each user's blog as well as the leaderboard. I implemented a month segmentation feature on the blog page, so you can browse through your runs per-month and see them from most to least recent. I currently have the blog info as editable fields on the user's page but I'll probably make a user record with that information when I'm more clear on how the database phase works.
+### Future Websocket Support
+    I implemented the longest distance ran leaderboard by pulling all the run records I have, ordering them, and populating a table with them. In the future they will populate and reorder live
+### General support for logic
+    The main interaction in this application is creating a run and then seeing placed in the proper place on your blog. This is essentially done and works very nicely. The other interesting thing that I implemented was attaching the user to the run record so I can do interesting things with the data on the leaderboard page.
