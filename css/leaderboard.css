@@ -1,7 +1,7 @@
 main {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: stretch;
     gap: 16px;
     padding: 32px;
     flex:1;

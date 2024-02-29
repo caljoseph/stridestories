@@ -34,13 +34,13 @@
       <main>
         <div class="calendar">
           <button id="prev-week"><p>Previous Week</p></button>
-          <h3>Feb 11 - Feb 18</h3>
+          <h3 id="month-display"></h3>
           <button id="next-week"><p>Next Week</p></button>
         </div>
   
         <div class="leaderboard-body">
           <div class="distance">
-            <h3>Weekly Distance:</h3>
+            <h3>Weekly Distance:<br>(not yet implemented) </h3>
             <table>
               <thead>
                   <tr>
@@ -49,7 +49,7 @@
                       <th>Mileage</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody id="total-distance-data">
                   <tr>
                       <td>1</td>
                       <td>Runner 1</td>
@@ -144,7 +144,7 @@
                       <th>Run miles</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody id="longest-run-data">
                   <tr>
                       <td>1</td>
                       <td>Runner 1</td>
@@ -182,6 +182,6 @@
     integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
     crossorigin="anonymous"
   ></script>
-  <script src="javascript/leaderboard.js"></script>
+  <script type="module" src="javascript/leaderboard.js"></script>
   </body>
 </html>
