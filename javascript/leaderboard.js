@@ -73,7 +73,7 @@ function generateTableEntry(record, index) {
   const name = document.createElement('td');
   const runMiles = document.createElement('td');
 
-  rank.textContent = index;
+  rank.textContent = index + 1;
   name.textContent = record.username;
   runMiles.textContent = record.distance;
 
@@ -89,10 +89,10 @@ function generateTableEntry(record, index) {
 
 function sortLongestRun(records) {
   return records.sort((a, b) => {
-    const durationA = parseInt(a.duration, 10);
-    const durationB = parseInt(b.duration, 10);
+    const durationA = parseInt(a.distance, 10);
+    const durationB = parseInt(b.distance, 10);
 
-    return durationA - durationB;
+    return durationB - durationA;
   });
 }
 
