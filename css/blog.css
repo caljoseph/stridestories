@@ -1,19 +1,27 @@
 body {
     display: flex;
-    margin:0;
+    margin: 0;
     flex-direction: column;
+    min-height: 100vh;
+    
 }
 
 main {
-    flex: 1;
-    /* max-height: calc(100vh - 114px); */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
 }
-.main-wrapper {
-    flex: 1;
-}
+
 footer {
+    height: 30px;
+    position: sticky;
+    bottom: 0;
+    padding: 10px; 
+    z-index: 1000; 
 }
 .blog-body {
+    flex: 1;
     width: 100%;
     height: 100%;
     display: flex;
@@ -23,7 +31,7 @@ footer {
     padding: 16px;
 }
 .blog-info {
-    flex: 0 1 25%;
+    flex: 1 1 25%;
     min-width: 200px;
     max-width: 300px;
     background: -webkit-linear-gradient(#ffdbc7, #ebb79b);
@@ -82,7 +90,7 @@ footer {
 
 .blog-and-calendar {
     display: flex;
-    flex: 1 1 auto;
+    flex: 4 1 75%;
     flex-direction: column;
     align-items: center;
     justify-content:flex-start;
@@ -155,6 +163,7 @@ footer {
     align-items: center; /* Set to stretch or other values as needed */
     padding-top: 8px;
     padding-bottom: 16px;
+    width: 100%;
 }
 .blog-entry {
     align-self: right;
@@ -234,6 +243,7 @@ footer {
     color: white;
     font-size: 24px;
     padding:0;
+    text-align: center;
 }
 #pace-info,
 #duration-info,

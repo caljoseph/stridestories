@@ -8,11 +8,11 @@ export class RunRecordDAO {
                 //must decode string into array of strings, then each string to a record
                 const runRecordsArrayStrings = JSON.parse(runRecordsJson);
 
-                const runRecordsArrayObjects = runRecordsArrayStrings.map((recordString) => {
-                    return JSON.parse(recordString);
-                });
+                // const runRecordsArrayObjects = runRecordsArrayStrings.map((recordString) => {
+                //     return JSON.parse(recordString);
+                // });
 
-                return runRecordsArrayObjects;
+                return runRecordsArrayStrings;
             } catch (error) {
                 console.error("Error parsing JSON:", error);
                 return []; 
@@ -26,6 +26,9 @@ export class RunRecordDAO {
     addRecord(record) {
         const runRecords = this.getAllRecords();
         runRecords.push(record);
+
+        runRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
+
         localStorage.setItem("runRecords", JSON.stringify(runRecords));
     }
     clear() {

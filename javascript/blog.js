@@ -1,24 +1,77 @@
-//here's what I'm gonna do:
-//I'm going to figure out how to dynamically generate blog entries from a runRecord
-//Then I'm going to add a blog post for every runRecord where the username matches
-//Whoever is logged in
-//Then once I'm getting all my blog post returned to me I'll figure out that pesky 
+
 
 import { RunRecordDAO } from "./runRecordDAO.js"
 
+const PREVIOUS = -1;
+const NEXT = 1;
 const loggedInUser = localStorage.getItem("username");
+const currentMonth = new Date().getMonth();
+const currentYear = new Date().getFullYear();
+let monthInfo = [currentMonth, currentYear];
+const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
 
 const runRecordDAO = new RunRecordDAO;
 const allRunRecords = runRecordDAO.getAllRecords();
 const userRunRecords = allRunRecords.filter(record => record.username === loggedInUser);
 
 const blogContent = document.querySelector(".blog-content")
+const nextWeek = document.querySelector("#next-week");
+const prevWeek = document.querySelector("#prev-week");
+const monthDisplay = document.querySelector("#month-display");
 
-userRunRecords.forEach(record => {
-    const entry = generateBlogEntry(record);
-    blogContent.appendChild(entry);
+loadEntriesCurrentMonth();
+
+
+
+nextWeek.addEventListener("click", () => {
+    updateMonthInfo(NEXT);
+    loadEntriesCurrentMonth();
+});
+prevWeek.addEventListener("click", () => {
+    updateMonthInfo(PREVIOUS)
+    loadEntriesCurrentMonth();
 });
 
+function updateMonthInfo(increment) {
+    const [currentMonth, currentYear] = monthInfo;
+    let newMonth = (currentMonth + increment) % 12;
+    newMonth = (newMonth + 12) % 12;
+    monthInfo[0] = newMonth; 
+
+    if (increment === 1 && newMonth === 0) {
+        monthInfo[1]++;
+    } 
+    if (increment === -1 && newMonth === 11) {
+        monthInfo[1]--;
+    }
+}
+
+
+function loadEntriesCurrentMonth() {
+    //clean house
+    blogContent.innerHTML = "";
+    //load up relevant posts
+    const monthRecords = restrictRecordsToCurrentMonth(userRunRecords);
+    monthRecords.forEach(record => {
+        const entry = generateBlogEntry(record);
+        blogContent.appendChild(entry);
+    })
+    monthDisplay.textContent = months[monthInfo[0]] + " " + monthInfo[1];
+}
+
+
+
+function restrictRecordsToCurrentMonth(records) {
+    return records.filter(record => {
+        const month = new Date(record.date).getMonth();
+        const year = new Date(record.date).getFullYear();
+        return month === monthInfo[0]
+            && year === monthInfo[1];
+    });
+}
 
 function generateBlogEntry(record) {
     const entry = document.createElement("div");
@@ -31,7 +84,7 @@ function generateBlogEntry(record) {
     const dateData = document.createElement("p");
     dateData.innerText = record.date;
     const locationData = document.createElement("p");
-    locationData.innerText = "TODO-location"; 
+    locationData.innerText = record.location; 
 
     entryDateLocation.appendChild(dateData);
     entryDateLocation.appendChild(locationData);
@@ -56,6 +109,12 @@ function generateBlogEntry(record) {
 
     entryDescription.appendChild(descriptionParagraph);
     entry.appendChild(entryDescription);
+
+
+
+
+
+
 
     const entryStats = document.createElement("div");
     entryStats.classList.add("entry-stats");
