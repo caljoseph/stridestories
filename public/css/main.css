@@ -116,6 +116,9 @@ main {
 #about:hover{
     transform: scale(1.1); 
 }
+#record:hover{
+    transform: scale(1.1); 
+}
 #home a:hover{
     color: rgb(233, 98, 86);
 }
@@ -133,6 +136,12 @@ main {
 }
 #about a:hover{
     color: rgb(133, 222, 146);
+    transition: transform 0.3s ease;
+
+    transform: scale(1.1);
+}
+#record a:hover{
+    color: rgb(255, 163, 77);
     transition: transform 0.3s ease;
 
     transform: scale(1.1);
