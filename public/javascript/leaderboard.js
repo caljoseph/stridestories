@@ -43,9 +43,23 @@ const monthDisplay = document.querySelector("#month-display");
 const TDBody = document.querySelector("#total-distance-data");
 const LRBody = document.querySelector("#longest-run-data");
 
+let allRunRecords;
+try {
+    allRunRecords = await sendGetRequest("/api/runs");
+    console.log("Runs loaded sucessfully")
+} catch (error) {
+    console.error("Couldn't load runs", error.message);
+}
 
-const runRecordDAO = new RunRecordDAO;
-const allRunRecords = runRecordDAO.getAllRecords();
+async function sendGetRequest(url) {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(`Sorry! Couldn't get runs: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
 
 loadEntriesCurrentMonth();
 
@@ -98,10 +112,10 @@ function sortLongestRun(records) {
 
 function restrictRecordsToCurrentMonth(records) {
   return records.filter(record => {
-      const month = new Date(record.date).getMonth();
-      const year = new Date(record.date).getFullYear();
-      return month === monthInfo[0]
-          && year === monthInfo[1];
+    const month = new Date(record.date).getUTCMonth();
+    const year = new Date(record.date).getFullYear();
+    return month === monthInfo[0]
+        && year === monthInfo[1];
   });
 }
 nextWeek.addEventListener("click", () => {

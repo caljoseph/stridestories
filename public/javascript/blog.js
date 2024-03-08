@@ -34,8 +34,6 @@ async function sendGetRequest(url) {
 }
 
 
-
-
 const userRunRecords = allRunRecords.filter(record => record.username === loggedInUser);
 
 const blogContent = document.querySelector(".blog-content")
@@ -44,8 +42,6 @@ const prevWeek = document.querySelector("#prev-month");
 const monthDisplay = document.querySelector("#month-display");
 
 loadEntriesCurrentMonth();
-
-
 
 nextWeek.addEventListener("click", () => {
     updateMonthInfo(NEXT);
