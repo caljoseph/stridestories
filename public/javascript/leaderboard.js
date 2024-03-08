@@ -1,4 +1,3 @@
-import { RunRecordDAO } from "./runRecordDAO.js"
 import { RunRecord } from "./runRecord.js"
 
 document.addEventListener("DOMContentLoaded", function () {

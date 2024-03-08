@@ -1,5 +1,4 @@
 import { RunRecord } from "./runRecord.js";
-import { RunRecordDAO } from "./runRecordDAO.js";
 
 document.getElementById("submit").addEventListener("click", function() {
     const date = document.querySelector("#date");
