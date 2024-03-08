@@ -16,7 +16,7 @@ document.getElementById("submit").addEventListener("click", function() {
         submit();
     }
 });
-function submit() {
+async function submit() {
     const date = document.querySelector("#date").value;
     const distance = document.querySelector("#distance").value;
     const duration = document.querySelector("#duration").value;
@@ -26,9 +26,27 @@ function submit() {
     const title = document.querySelector("#title").value;
     const username = localStorage.getItem("username")
 
-    const record_submit = new RunRecord(date, distance, duration, runType, notes, username, title, location);
+    const record = new RunRecord(date, distance, duration, runType, notes, username, title, location);
 
-    const runRecordDAO = new RunRecordDAO;
-    runRecordDAO.addRecord(record_submit);
+    try {
+        await sendPostRequest("/api/run", record);
+        console.log("Run added successfully!")
+    } catch (error) {
+        console.error("Couldn't add run", error.message);
+    }
+
     return true;
 }
+
+async function sendPostRequest(url, data) {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+        throw new Error(`Sorry! Couldn't add this run: ${response.statusText}`);
+    }
+} 

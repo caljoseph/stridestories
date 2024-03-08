@@ -13,13 +13,34 @@ const months = [
     "July", "August", "September", "October", "November", "December"
 ];
 
-const runRecordDAO = new RunRecordDAO;
-const allRunRecords = runRecordDAO.getAllRecords();
+
+
+let allRunRecords;
+try {
+    allRunRecords = await sendGetRequest("/api/runs");
+    console.log("Runs loaded sucessfully")
+} catch (error) {
+    console.error("Couldn't load runs", error.message);
+}
+
+async function sendGetRequest(url) {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(`Sorry! Couldn't get runs: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+
+
+
 const userRunRecords = allRunRecords.filter(record => record.username === loggedInUser);
 
 const blogContent = document.querySelector(".blog-content")
-const nextWeek = document.querySelector("#next-week");
-const prevWeek = document.querySelector("#prev-week");
+const nextWeek = document.querySelector("#next-month");
+const prevWeek = document.querySelector("#prev-month");
 const monthDisplay = document.querySelector("#month-display");
 
 loadEntriesCurrentMonth();
@@ -66,7 +87,8 @@ function loadEntriesCurrentMonth() {
 
 function restrictRecordsToCurrentMonth(records) {
     return records.filter(record => {
-        const month = new Date(record.date).getMonth();
+        const month = new Date(record.date).getUTCMonth();
+        
         const year = new Date(record.date).getFullYear();
         return month === monthInfo[0]
             && year === monthInfo[1];

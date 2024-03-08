@@ -112,8 +112,8 @@ footer {
     box-shadow: 5px 5px 10px 0px #333;
     padding: 8px;
 }
-#prev-week,
-#next-week {
+#prev-month,
+#next-month {
     width: 20%;
     margin-left: 2px;
     /* background-color: #c07a3c; */
@@ -127,25 +127,25 @@ footer {
     display: flex;
     justify-content: center; align-items: center;
 }
-#prev-week p,
-#next-week p {
+#prev-month p,
+#next-month p {
     margin:0;
     overflow: hidden; 
     white-space: nowrap;
 }
 
-#prev-week:hover,
-#next-week:hover {
+#prev-month:hover,
+#next-month:hover {
     background-color: #e0915a; 
 
 }
 
-#prev-week:active,
-#next-week:active {
+#prev-month:active,
+#next-month:active {
     background-color: #a6632e; 
 
 }
-#next-week {
+#next-month {
     margin-right: 2px;
 }
 .calendar h3 {

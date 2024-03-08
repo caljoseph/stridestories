@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+let runRecords = [];
+
 
 // The service port. In production the frontend code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
@@ -13,6 +15,25 @@ app.use(express.static('public'));
 // Router for service endpoints
 const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
+
+//http requests will use apiRouter ex apiRouter.get('/path', (_req, res) => { res.send(scores); });
+apiRouter.get('/runs', async (_req, res) => {
+  res.send(runRecords);
+});
+
+apiRouter.post('/run', (req, res) => {
+  runRecords = addRecord(req.body, runRecords)
+  res.send(runRecords);
+});
+
+function addRecord(run, runRecords) {
+  runRecords.push(run);
+  runRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
+  return runRecords;
+}
+
+
+
 
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
