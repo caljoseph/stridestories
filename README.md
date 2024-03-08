@@ -56,6 +56,7 @@ I laid out the basic structure of the blog with this deliverable.
 
 ## Web Services deliverable:
 ### Endpoints
+    
     This ended up being relatively quick and easy as I just had to swap out my RunRecordDAO objects for http fetches. Specifically I implemented a get all runs endpoint and a create new run endpoint. Getting all the runs just consists of returning the allRunRecords array I have in my server's memory. Posting a run I also decided to implement the sorting on the server side rather than the client side.
 ### Blog Support
     After spending an infuriating amount of time fixing a bug caused by timezones, I swapped out my calls to getAllRuns to hitting my get runs endpoint and it was as simple as that.
