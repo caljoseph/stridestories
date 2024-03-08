@@ -2,6 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const username = localStorage.getItem("username");
   
     const navBar = document.querySelector(".menu-bar");
+    const quoteText = document.querySelector("#quote-text");
+    const quoteAuthor = document.querySelector("#quote-author");
+
+
   
     if (username && username.trim() !== "") {
       // If username exists, render the full navigation bar
