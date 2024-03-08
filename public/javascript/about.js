@@ -1,12 +1,10 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     const username = localStorage.getItem("username");
   
     const navBar = document.querySelector(".menu-bar");
-    const quoteText = document.querySelector("#quote-text");
-    const quoteAuthor = document.querySelector("#quote-author");
-
-
-  
+    
+    
     if (username && username.trim() !== "") {
       // If username exists, render the full navigation bar
       navBar.innerHTML = `
@@ -26,5 +24,20 @@ document.addEventListener("DOMContentLoaded", function () {
           <li id="about"><a href="about.html">About</a></li>
         </ul>`;
     }
+    const url = "https://api.quotable.io/random";
+    fetch(url)
+      .then((x) => x.json())
+      .then((response) => {
+        const quoteText = document.querySelector("#quote-text");
+        const quoteAuthor = document.querySelector("#quote-author");
+        quoteText.textContent = response.content;
+        quoteAuthor.textContent = "- " + response.author;
+      })
+      .catch((error) => {
+        console.error("Error fetching quote:", error);
+      });
   });
+
   
+  
+
