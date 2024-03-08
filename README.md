@@ -62,3 +62,5 @@ I laid out the basic structure of the blog with this deliverable.
     After spending an infuriating amount of time fixing a bug caused by timezones, I swapped out my calls to getAllRuns to hitting my get runs endpoint and it was as simple as that.
 ### Leaderboard Support
     The leaderboard uses the same logic as the blog without segregating based on user. I can't really impliment the weekly mileage leader yet without having a better way to test and think about users but swapping out for my get runs endpoint was also quick and easy.
+### Third Party API call
+    I tacked on an api call to the quotable random quote endpoint and stuck that in my about page.
