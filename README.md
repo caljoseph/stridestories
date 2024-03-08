@@ -53,3 +53,11 @@ I laid out the basic structure of the blog with this deliverable.
     I implemented the longest distance ran leaderboard by pulling all the run records I have, ordering them, and populating a table with them. In the future they will populate and reorder live
 ### General support for logic
     The main interaction in this application is creating a run and then seeing placed in the proper place on your blog. This is essentially done and works very nicely. The other interesting thing that I implemented was attaching the user to the run record so I can do interesting things with the data on the leaderboard page.
+
+## Web Services deliverable:
+### Endpoints
+    This ended up being relatively quick and easy as I just had to swap out my RunRecordDAO objects for http fetches. Specifically I implemented a get all runs endpoint and a create new run endpoint. Getting all the runs just consists of returning the allRunRecords array I have in my server's memory. Posting a run I also decided to implement the sorting on the server side rather than the client side.
+### Blog Support
+    After spending an infuriating amount of time fixing a bug caused by timezones, I swapped out my calls to getAllRuns to hitting my get runs endpoint and it was as simple as that.
+### Leaderboard Support
+    The leaderboard uses the same logic as the blog without segregating based on user. I can't really impliment the weekly mileage leader yet without having a better way to test and think about users but swapping out for my get runs endpoint was also quick and easy.
