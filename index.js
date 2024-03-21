@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const DB = require('./database.js');
 
 const app = express();
+const authCookieName = 'token';
+
 let runRecords = [];
 
 
@@ -13,8 +15,14 @@ const port = process.argv.length > 2 ? process.argv[2] : 3000;
 // JSON body parsing using built-in middleware
 app.use(express.json());
 
+// Use the cookie parser middleware for tracking authentication tokens
+app.use(cookieParser());
+
 // Serve up the frontend static content hosting
 app.use(express.static('public'));
+
+// Trust headers that are forwarded from the proxy so we can determine IP addresses
+app.set('trust proxy', true);
 
 // Router for service endpoints
 const apiRouter = express.Router();
