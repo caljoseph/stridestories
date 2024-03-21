@@ -1,4 +1,7 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
+const DB = require('./database.js');
 
 const app = express();
 let runRecords = [];
