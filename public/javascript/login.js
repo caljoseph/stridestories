@@ -25,10 +25,15 @@ async function validateAndLogin() {
   };
 
   if (await login(body)) {
+    localStorage.setItem('username', body.username);
     window.location.href = "logged-in.html";
     return;
   } else {
-    console.log("login failed")
+    document.getElementById("username-error").innerText = "";
+    userNameInput.classList.add("is-invalid");
+    passwordInput.classList.add("is-invalid");
+
+    document.getElementById("password-error").innerText = "Invalid credentials";
 
   }
 
@@ -61,10 +66,15 @@ async function validateAndRegister() {
   };
 
   if (await register(body)) {
+    localStorage.setItem('username', body.username);
     window.location.href = "logged-in.html";
     return;
   } else {
-    console.log("register failed")
+    document.getElementById("username-error").innerText = "";
+    userNameInput.classList.add("is-invalid");
+    passwordInput.classList.add("is-invalid");
+    document.getElementById("password-error").innerText = "User already exists";
+
   }
 
 }
@@ -76,7 +86,6 @@ async function login(body) {
       await sendPostRequest("/api/auth/login", body);
       console.log("Logged in successfully")
   } catch (error) {
-      console.error("Unable to login", error.message);
       return false;
   }
 
@@ -88,7 +97,6 @@ async function register(body) {
       await sendPostRequest("/api/auth/create", body);
       console.log("Registered successfully")
   } catch (error) {
-      console.error("Unable to register", error.message);
       return false;
   }
 

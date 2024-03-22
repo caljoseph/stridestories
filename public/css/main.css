@@ -186,7 +186,7 @@ main {
 .password-box {
     width: auto;
     height: 60px;
-    margin-bottom: 32px;
+    margin-bottom: 48px;
 }
 .username-box input{
     width: 100%;
@@ -214,7 +214,14 @@ main {
 .username-box input::placeholder {
     color:rgb(135, 83, 45);
 }
+#login-register {
+    display: flex;
+    justify-content: stretch;
+}
+
+
 #login-box .remember-forget {
+    width: 80%;
     padding-top: 32px;
     display: flex;
     justify-content: space-between;
@@ -230,6 +237,11 @@ main {
     display: flex;
     justify-content: space-between;
     color: white;
+}
+
+.button-wrapper {
+    flex-grow: 1;
+    flex-basis: 50%;
 }
 #login-box .button-wrapper {
     display: flex;
@@ -248,8 +260,11 @@ main {
     margin:16px;
 
 }
+#register {
+    background: #c07a3c !important;
+}
 #login-box .button-wrapper button:hover {
-    background: white;
+    background: white !important;;
     color: black;
     text-shadow: 1px 1px 0px rgb(135, 83, 45);
 
@@ -262,8 +277,16 @@ main {
 
 #username-error,
 #password-error {
-    color: white;
+    color: rgb(217, 54, 54);
     font-size: 16px;
     font-weight: bold;
+    text-shadow: 
+    -1px -1px 3px rgba(255, 255, 255, 0.8),  
+     1px -1px 3px rgba(255, 255, 255, 0.8),  
+    -1px 1px 3px rgba(255, 255, 255, 0.8),  
+     1px 1px 3px rgba(255, 255, 255, 0.8); 
 }
 
+.invalid-feedback {
+    text-align: center;
+}

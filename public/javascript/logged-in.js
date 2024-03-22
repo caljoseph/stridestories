@@ -1,15 +1,28 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var userName = localStorage.getItem("username");
+ document.addEventListener("DOMContentLoaded", async function() {
+    const username = localStorage.getItem('username');
+
     var userParagraph = document.getElementById("user");
-    if(userName) {
-        userParagraph.textContent = 'Hello ' + userName + '!'; 
+    if(username) {
+        userParagraph.textContent = 'Hello ' + username + '!'; 
     } else {
         userParagraph.textContent = "Username empty (but hello anyway!)"
     }
 });
 
-function logout() {
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
+async function logout() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        try {
+            await fetch('/api/auth/logout', {
+                method: 'DELETE'
+            });
+            console.log('Logged out successfully');
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    } else {
+        console.error('Username not found in localStorage');
+    }
+    localStorage.removeItem('username');
 }
 
