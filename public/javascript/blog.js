@@ -1,6 +1,6 @@
 const PREVIOUS = -1;
 const NEXT = 1;
-const loggedInUser = localStorage.getItem("username");
+const username = localStorage.getItem("username");
 const currentMonth = new Date().getMonth();
 const currentYear = new Date().getFullYear();
 let monthInfo = [currentMonth, currentYear];
@@ -28,9 +28,9 @@ async function sendGetRequest(url) {
     const data = await response.json();
     return data;
 }
+populateName(username);
 
-
-const userRunRecords = allRunRecords.filter(record => record.username === loggedInUser);
+const userRunRecords = allRunRecords.filter(record => record.username === username);
 
 const blogContent = document.querySelector(".blog-content")
 const nextWeek = document.querySelector("#next-month");
@@ -170,4 +170,13 @@ function calculatePace(duration, distance) {
     const paceSeconds = Math.round((pace - paceMinutes) * 60);
 
     return `${paceMinutes}:${(paceSeconds < 10 ? '0' : '')}${paceSeconds} min/mi`;
+}
+
+function populateName(username) {
+    const capitalizedUsername = username.charAt(0).toUpperCase() + username.slice(1);
+    const blogTitle = document.querySelector(".blog-title h2");
+
+    if (blogTitle) {
+        blogTitle.innerText = capitalizedUsername + "'s Blog";
+    }
 }

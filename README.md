@@ -64,3 +64,13 @@ I laid out the basic structure of the blog with this deliverable.
     The leaderboard uses the same logic as the blog without segregating based on user. I can't really impliment the weekly mileage leader yet without having a better way to test and think about users but swapping out for my get runs endpoint was also quick and easy.
 ### Third Party API call
     I tacked on an api call to the quotable random quote endpoint and stuck that in my about page.
+
+## Login Deliverable:
+### New user registration
+    I revamped my login screen to be all pretty. Now you can register with a dedicated button, with input validation on the front end and storing in my database with my backend.
+### Existing user authentication
+    There's a check for valid credentials at login with a callout. Once a user has registered that can use that username and password to access their specific blog and create new runs. Then the username is stored in local storage and the user gets a cookie with their authtoken as well.
+### Stores/receives application data/credentials in MongoDB
+    I have my users table and my runs table. Where one of the fields for each run is the associated user. I followed the example of Simon and used the same basic design for my database.
+### Restricts application functionality based upon authentication
+    Two parts to this one. Visitors who aren't logged in can only see the leaderboard and about pages, but onced registered and logged in, users can see their blog and post to it. Note that the blogs are segmented per user.
