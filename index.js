@@ -6,8 +6,6 @@ const DB = require('./database.js');
 const app = express();
 const authCookieName = 'token';
 
-let runRecords = [];
-
 
 // The service port. In production the frontend code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
