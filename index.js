@@ -2,11 +2,12 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const DB = require('./database.js');
-const { peerProxy } = require('./peerProxy.js');
+const WebSocket = require('ws');
 
 const app = express();
 const authCookieName = 'token';
-
+const server = require('http').createServer(app);
+const wss = new WebSocket.Server({ server });
 
 // The service port. In production the frontend code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
@@ -99,6 +100,13 @@ secureApiRouter.post('/run', async (req, res) => {
   await DB.addRun(run);
   const runs = await DB.getRuns();
   res.send(runs);
+
+    // Broadcast the update
+  // wss.clients.forEach(function each(client) {
+  //   if (client.readyState === WebSocket.OPEN) {
+  //       client.send(JSON.stringify(runs));
+  //   }
+  // });
 });
 
 // Default error handler
@@ -121,11 +129,14 @@ function setAuthCookie(res, authToken) {
 
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
-    res.sendFile('index.html', { root: 'public' });
-  });
-  
-const httpService = app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  res.sendFile('index.html', { root: 'public' });
 });
 
-peerProxy(httpService);
+server.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
+
+wss.on('connection', function connection(ws) {
+  console.log('A new client connected');
+  ws.send('Welcome to the WebSocket server!');
+});

@@ -1,3 +1,19 @@
+const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+socket.onopen = function(event) {
+  console.log("Connected to WebSocket server");
+};
+
+socket.onmessage = function(event) {
+  console.log("Message from server: ", event.data);
+};
+
+socket.onerror = function(error) {
+  console.error("WebSocket error: ", error);
+};
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const username = localStorage.getItem("username");
   
@@ -41,13 +57,19 @@ const TDBody = document.querySelector("#total-distance-data");
 const LRBody = document.querySelector("#longest-run-data");
 
 let allRunRecords;
+loadRuns()
 
-try {
+async function loadRuns() {
+  try {
     allRunRecords = await sendGetRequest("/api/runs");
     console.log("Runs loaded sucessfully")
+    loadEntriesCurrentMonth();
 } catch (error) {
     console.error("Couldn't load runs", error.message);
 }
+}
+
+
 async function sendGetRequest(url) {
     const response = await fetch(url);
 
@@ -58,16 +80,6 @@ async function sendGetRequest(url) {
     return data;
 }
 
-// functions for getting the relevant run records
-loadEntriesCurrentMonth();
-nextWeek.addEventListener("click", () => {
-  updateMonthInfo(NEXT);
-  loadEntriesCurrentMonth();
-});
-prevWeek.addEventListener("click", () => {
-  updateMonthInfo(PREVIOUS)
-  loadEntriesCurrentMonth();
-});
 function loadEntriesCurrentMonth() {
   //clean house
   TDBody.innerHTML = "";
@@ -86,37 +98,6 @@ function loadEntriesCurrentMonth() {
 
   monthDisplay.textContent = months[monthInfo[0]] + " " + monthInfo[1];
 }
-function restrictRecordsToCurrentMonth(records) {
-  return records.filter(record => {
-    const month = new Date(record.date).getUTCMonth();
-    const year = new Date(record.date).getFullYear();
-    return month === monthInfo[0]
-        && year === monthInfo[1];
-  });
-}
-function sortLongestRun(records) {
-  return records.sort((a, b) => {
-    const durationA = parseInt(a.distance, 10);
-    const durationB = parseInt(b.distance, 10);
-
-    return durationB - durationA;
-  });
-}
-function updateMonthInfo(increment) {
-  const [currentMonth, currentYear] = monthInfo;
-  let newMonth = (currentMonth + increment) % 12;
-  newMonth = (newMonth + 12) % 12;
-  monthInfo[0] = newMonth; 
-
-  if (increment === 1 && newMonth === 0) {
-      monthInfo[1]++;
-  } 
-  if (increment === -1 && newMonth === 11) {
-      monthInfo[1]--;
-  }
-}
-
-// function to populate table
 function generateTableEntry(record, index) {
   const entry = document.createElement('tr');
   const rank = document.createElement('td');
@@ -134,4 +115,42 @@ function generateTableEntry(record, index) {
   return entry;
 }
 
-// Websocket config
+function sortLongestRun(records) {
+  return records.sort((a, b) => {
+    const durationA = parseInt(a.distance, 10);
+    const durationB = parseInt(b.distance, 10);
+
+    return durationB - durationA;
+  });
+}
+
+function restrictRecordsToCurrentMonth(records) {
+  return records.filter(record => {
+    const month = new Date(record.date).getUTCMonth();
+    const year = new Date(record.date).getFullYear();
+    return month === monthInfo[0]
+        && year === monthInfo[1];
+  });
+}
+nextWeek.addEventListener("click", () => {
+  updateMonthInfo(NEXT);
+  loadEntriesCurrentMonth();
+});
+prevWeek.addEventListener("click", () => {
+  updateMonthInfo(PREVIOUS)
+  loadEntriesCurrentMonth();
+});
+
+function updateMonthInfo(increment) {
+  const [currentMonth, currentYear] = monthInfo;
+  let newMonth = (currentMonth + increment) % 12;
+  newMonth = (newMonth + 12) % 12;
+  monthInfo[0] = newMonth; 
+
+  if (increment === 1 && newMonth === 0) {
+      monthInfo[1]++;
+  } 
+  if (increment === -1 && newMonth === 11) {
+      monthInfo[1]--;
+  }
+}
