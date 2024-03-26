@@ -74,7 +74,6 @@ async function loadRuns() {
 }
 }
 
-
 async function sendGetRequest(url) {
     const response = await fetch(url);
 
@@ -91,11 +90,19 @@ function loadEntriesCurrentMonth() {
   LRBody.innerHTML = "";
   
   const monthRecords = restrictRecordsToCurrentMonth(allRunRecords);
+  const sortedDistance = sortCumulativeUserDistance(monthRecords);
   const sortedLongest = sortLongestRun(monthRecords);
   
   sortedLongest.forEach((record, index) => {
     const entry = generateTableEntry(record, index);
     LRBody.appendChild(entry);
+
+    if (index + 1 === 10) return;
+    // only display the top ten
+  });
+  sortedDistance.forEach((record, index) => {
+    const entry = generateTableEntry(record, index);
+    TDBody.appendChild(entry);
 
     if (index + 1 === 10) return;
     // only display the top ten
@@ -127,6 +134,27 @@ function sortLongestRun(records) {
 
     return durationB - durationA;
   });
+}
+
+function sortCumulativeUserDistance(records) {
+  const userDistance = records.reduce((acc, run) => {
+    const distance = parseFloat(run.distance, 10);
+    if (acc[run.username]) {
+      acc[run.username] += distance;
+    } else {
+      acc[run.username] = 0;
+      acc[run.username] += distance;
+    }
+    return acc;
+  }, {});
+
+  const userDistanceArray = Object.entries(userDistance).map(([username, totalDistance]) => ({
+    username,
+    distance: totalDistance,
+  }));
+
+  userDistanceArray.sort((a, b) => b.distance - a.distance);
+  return userDistanceArray;
 }
 
 function restrictRecordsToCurrentMonth(records) {

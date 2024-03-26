@@ -5,7 +5,6 @@ const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
 
 socket.onopen = function(event) {
-    console.log("WebSocket is open now.");
 };
 
 socket.onmessage = function(event) {

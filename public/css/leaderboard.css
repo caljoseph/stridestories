@@ -70,11 +70,12 @@ main {
     display: flex;
     flex-direction: row;
     gap: 16px;
+    justify-content: flex-end;    
 }
 .distance,
 .longest {
     background: -webkit-linear-gradient(#ffdbc7, #ebb79b);
-    flex-grow: 0;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -109,7 +110,7 @@ main {
     border: 5px solid white;
     color: white;
     font-size: 24px;
-    padding:0;
+    padding: 2px 8px;
     text-align: center;  
 }
 .distance td,
@@ -117,8 +118,6 @@ main {
     background-color: #ffdbc7;
     border: 5px solid white;
     font-weight: bold;
-}
-th, td {
-    padding: 8px;
     text-align: center;   
+    padding: 8px 8px;
 }

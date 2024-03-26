@@ -126,10 +126,6 @@ function setAuthCookie(res, authToken) {
   });
 }
 
-
-
-
-
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
@@ -141,6 +137,6 @@ server.listen(port, () => {
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
+    console.log('WS message received: %s', message);
   });
 });
