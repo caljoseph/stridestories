@@ -1,17 +1,24 @@
 const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
 const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
-socket.onopen = function(event) {
-  console.log("Connected to WebSocket server");
-};
 
-socket.onmessage = function(event) {
-  console.log("Message from server: ", event.data);
+
+socket.onopen = function(event) {
+    console.log("WebSocket is open now.");
+    socket.send("Hi from leaderboard");
 };
 
 socket.onerror = function(error) {
   console.error("WebSocket error: ", error);
 };
 
+socket.onmessage = function(event) {
+  const message = JSON.parse(event.data);
+  if (message.type === 'runsUpdate') {
+    loadRuns()
+  } else {
+    console.log("Message from server: ", event.data);
+  }
+};
 
 
 document.addEventListener("DOMContentLoaded", function () {

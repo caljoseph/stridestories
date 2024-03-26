@@ -1,5 +1,22 @@
 import { RunRecord } from "./runRecord.js";
 
+const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
+
+socket.onopen = function(event) {
+    console.log("WebSocket is open now.");
+};
+
+socket.onmessage = function(event) {
+  console.log("Message from server: ", event.data);
+};
+
+socket.onerror = function(error) {
+  console.error("WebSocket error: ", error);
+};
+
+
 document.getElementById("submit").addEventListener("click", function() {
     const date = document.querySelector("#date");
     const distance = document.querySelector("#distance");
@@ -28,24 +45,24 @@ async function submit() {
     const record = new RunRecord(date, distance, duration, runType, notes, username, title, location);
 
     try {
+        socket.send(JSON.stringify({ type: 'newRunSubmitted' }));
         await sendPostRequest("/api/run", record);
-        console.log("Run added successfully!")
+        console.log("Run added successfully!");
     } catch (error) {
         console.error("Couldn't add run", error.message);
     }
-
-    return true;
 }
 
 async function sendPostRequest(url, data) {
+    console.log("Sending POST request...");
     const response = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
     });
     if (!response.ok) {
-        throw new Error(`Sorry! Couldn't add this run: ${response.statusText}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
     }
-} 
+    const responseData = await response.json();
+    return responseData;
+}

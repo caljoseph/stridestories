@@ -102,11 +102,14 @@ secureApiRouter.post('/run', async (req, res) => {
   res.send(runs);
 
     // Broadcast the update
-  // wss.clients.forEach(function each(client) {
-  //   if (client.readyState === WebSocket.OPEN) {
-  //       client.send(JSON.stringify(runs));
-  //   }
-  // });
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      const message = JSON.stringify({
+        type: 'runsUpdate'
+      });
+      client.send(message);
+    }
+  });
 });
 
 // Default error handler
@@ -138,5 +141,16 @@ server.listen(port, () => {
 
 wss.on('connection', function connection(ws) {
   console.log('A new client connected');
-  ws.send('Welcome to the WebSocket server!');
+  ws.send(JSON.stringify('Welcome to the WebSocket server!'));
+  ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+  });
 });
+
+const broadcast = (data) => {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(data);
+    }
+  });
+};
