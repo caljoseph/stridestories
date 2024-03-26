@@ -74,3 +74,12 @@ I laid out the basic structure of the blog with this deliverable.
     I have my users table and my runs table. Where one of the fields for each run is the associated user. I followed the example of Simon and used the same basic design for my database.
 ### Restricts application functionality based upon authentication
     Two parts to this one. Visitors who aren't logged in can only see the leaderboard and about pages, but onced registered and logged in, users can see their blog and post to it. Note that the blogs are segmented per user.
+## Login Deliverable:
+### Backend listens for WebSocket connection
+    My server listens for Websocket connections, and sends a friendly message letting my client know the connection was successful
+### Frontend makes WebSocket connection
+    My record and leaderboard pages make a Websocket connection and receive a welcome message
+### Data sent over WebSocket connection
+    When another user submits a new run, that pings my server to let any websocket connections on the leaderboard page to pull the new run and add it to the leaderboard.
+### WebSocket data displayed in the application interface
+    This enables live updates to my leaderboards both for cumulative monthly milage and longest run, so logged in users and guest can see everyone's distances.
