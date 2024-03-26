@@ -140,17 +140,7 @@ server.listen(port, () => {
 });
 
 wss.on('connection', function connection(ws) {
-  console.log('A new client connected');
-  ws.send(JSON.stringify('Welcome to the WebSocket server!'));
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
   });
 });
-
-const broadcast = (data) => {
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
-    }
-  });
-};
