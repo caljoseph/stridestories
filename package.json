@@ -1,20 +1,7 @@
 {
-  "name": "startup",
-  "version": "1.0.0",
-  "description": "Welcome to QuickRunningBlog – a personalized running journal and leaderboard. Log runs, track your progress, and compete on the live leaderboard. ## Key Features ### Run Logging - Log your daily runs with details such as distance, time, and personal notes. - View history of your past runs. ### Leaderboard - Real-time running leaderboard displays the top runners by distance ## Technology Usage ### Authentication - Account creation allowing access to personal run history and notes ### Database Data - Runs will be stored in the database connected to a unique user ### WebSocket Data - Realtime leaderboard updates. Currently thinking by rolling distance run for the current week ## Mock: ![Mockup](images/mock.jpeg)",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cookie-parser": "^1.4.6",
-    "express": "^4.19.1",
-    "mongodb": "^6.5.0",
-    "uuid": "^9.0.1",
-    "ws": "^8.16.0"
-  }
+"scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+    }
 }
