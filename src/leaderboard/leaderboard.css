@@ -33,7 +33,7 @@ main {
     border: none;
     border-radius: 5px;
     padding: 5px;
-    color: white;
+    color: #d18848;
     
     transition: background-color 0.3s ease; 
     display: flex;
@@ -44,6 +44,7 @@ main {
     margin:0;
     overflow: hidden; 
     white-space: nowrap;
+    color: white;
 }
 
 #prev-week:hover,
