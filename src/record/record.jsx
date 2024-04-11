@@ -102,17 +102,17 @@ export function Record() {
               </div>
               <div className="form-group">
                 <label htmlFor="distance">Distance (miles):</label>
-                <input type="number" className="form-control" id="distance" value={distance} onChange={handleDistanceChange} step="0.1" required placeholder="Miles"/>
+                <input type="number" className="form-control" value={distance} onChange={handleDistanceChange} step="0.1" required placeholder="Miles"/>
               </div>
               <div className="form-group">
                 <label htmlFor="duration">Duration (minutes):</label>
-                <input type="number" className="form-control" id="duration" value={duration} onChange={handleDurationChange} required placeholder="Minutes"/>
+                <input type="number" className="form-control" value={duration} onChange={handleDurationChange} required placeholder="Minutes"/>
               </div>
             </div>
             <div className="right-column">
               <div className="form-group">
                 <label htmlFor="location">Location:</label>
-                <input type="text" className="form-control" id="location" value={location} onChange={handleLocationChange} required placeholder="Location"/>
+                <input type="text" className="form-control" value={location} onChange={handleLocationChange} required placeholder="Location"/>
               </div>
               <div className="form-group">
                 <label htmlFor="run-type">Type of Run:</label>
@@ -122,7 +122,7 @@ export function Record() {
                   <option>Trail</option>
                 </select>
               </div>
-              <div className="form-group">
+              <div className="form-group" id='notes-group'>
                 <label htmlFor="notes">Notes:</label>
                 <textarea className="form-control" id="notes" value={notes} onChange={handleNotesChange}></textarea>
               </div>

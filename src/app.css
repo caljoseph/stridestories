@@ -5,6 +5,14 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.body {
+    display: flex;
+    flex-direction: column;
+    min-width: 375px;
+    height: 100vh;
+}
+
 header {
     display: flex;
     flex: 0 80px;
@@ -21,27 +29,14 @@ header h1 {
     -webkit-text-fill-color: transparent;
     font-style: italic;
     font-weight: 900;
-    
 }
 
 nav {
     margin-left: auto;
     margin-right:16px;
     display: flex;
+}
 
-}
-.body {
-    display: flex;
-    margin:0;
-    flex-direction: column;
-    min-height: 100vh;
-    flex:1;
-}
-.main-wrapper {
-    flex:1;
-    display: flex;
-    flex-direction: column;
-}
 footer {
     background-color: rgb(135, 83, 45);
     border-top: 1px solid #ffdbc7;
@@ -53,7 +48,10 @@ footer {
     padding-right: 16px;
     color: #ffdbc7;
     margin-top: auto;
+    flex: 0 30px;
+
 }
+
 main {
     background-color: #ffdbc7;
     background-image: linear-gradient(
@@ -74,11 +72,12 @@ main {
     );
     background-size: 60px 60px;
     background-repeat: repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 16px;;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -148,141 +147,3 @@ main {
 }
 
   /* login box  */
-#login-box {
-    /* background-color: white; */
- 
-    padding: 32px;
-    background: -webkit-linear-gradient(#c07a3c, #905826);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 6px solid white;
-    border-radius: 25px;
-    box-shadow: 5px 5px 10px 0px #333;
-
-}
-#login-box h1{
-    font-weight: 600;
-    font-size: 48px;
-    text-align: center;
-    color: white;
-    margin: 0;
-    text-shadow: 1px 1px 0px rgb(135, 83, 45);
-
-    /* #ffdbc7 */
-}
-#login-box form {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    justify-content: space-between;
-}
-.username-box {
-    width: auto;
-    height: 60px;
-    margin-bottom: 32px;
-}
-.password-box {
-    width: auto;
-    height: 60px;
-    margin-bottom: 48px;
-}
-.username-box input{
-    width: 100%;
-    height: 100%;
-    background: #ffdbc7;
-    border-radius: 16px;
-    border: 5px solid white;
-    text-align: center;
-    font-size: 20px;
-    box-shadow: 2px 2px 10px 0px #333;
-    color:rgb(135, 83, 45);
-}
-.password-box input{
-    width: 100%;
-    height: 100%;
-    background: #ffdbc7;
-    border-radius: 16px;
-    border: 5px solid white;
-    text-align: center;
-    font-size: 20px;
-    box-shadow: 2px 2px 10px 0px #333;
-    color:rgb(135, 83, 45);
-}
-.password-box input::placeholder,
-.username-box input::placeholder {
-    color:rgb(135, 83, 45);
-}
-#login-register {
-    display: flex;
-    justify-content: stretch;
-}
-
-
-#login-box .remember-forget {
-    width: 80%;
-    padding-top: 32px;
-    display: flex;
-    justify-content: space-between;
-    margin: 0;
-    color:white;
-}
-#login-box .remember-forget input {
-    margin:0;
-    margin-right: 8px;
-    align-self: flex-end;
-}
-#login-box .sign-up {
-    display: flex;
-    justify-content: space-between;
-    color: white;
-}
-
-#login-box .button-wrapper {
-    display: flex;
-}
-#login-box button{
-    border-radius: 16px;
-    border: 5px solid white;
-    box-shadow: 2px 2px 10px 0px #333;
-
-    width: 100%;
-    height: 60px;
-    background:rgb(135, 83, 45);
-    color: white;
-    font-size: 20px;
-    font-weight: 600;
-    margin:16px;
-
-}
-#register {
-    background: #c07a3c !important;
-}
-#login-box button:hover {
-    background: white !important;;
-    color: black;
-    text-shadow: 1px 1px 0px rgb(135, 83, 45);
-
-    transform: scale(1.05);
-}
-
-#login-box button:active {
-    transform: scale(0.95);
-}
-
-#username-error,
-#password-error {
-    color: rgb(217, 54, 54);
-    font-size: 16px;
-    font-weight: bold;
-    text-shadow: 
-    -1px -1px 3px rgba(255, 255, 255, 0.8),  
-     1px -1px 3px rgba(255, 255, 255, 0.8),  
-    -1px 1px 3px rgba(255, 255, 255, 0.8),  
-     1px 1px 3px rgba(255, 255, 255, 0.8); 
-}
-
-.invalid-feedback {
-    text-align: center;
-}

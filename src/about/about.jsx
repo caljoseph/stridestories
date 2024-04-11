@@ -7,7 +7,7 @@ export function About() {
     <main>
         <div id="picture" className="picture-box"><img width="200px" src="images/running.webp" alt="random" /></div>
   
-        <p>
+        <p id="tagline">
           Welcome to Stridestories – a personalized running journal and leaderboard. 
           Log runs, track your progress, and compete on the live leaderboard.
         </p>

@@ -1,16 +1,14 @@
-body {
-    display: flex;
-    flex-direction: column;
-}
+
 .main-wrapper {
     display: flex;
     flex-direction: column;
 }
-main {
-    display: flex;
-    flex-direction: column;
-    max-height: calc(100vh - 114px);
-    gap: 16px;
+
+#tagline {
+    font-size: 24px;
+    font-style: italic;
+    background-color: white;
+    padding: 8px;
 }
 
 #quote {

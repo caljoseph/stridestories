@@ -6,6 +6,9 @@ export function Blog() {
   const [allRunRecords, setAllRunRecords] = useState([]);
   const [monthInfo, setMonthInfo] = useState([new Date().getMonth(), new Date().getFullYear()]);
   const username = localStorage.getItem("username");
+  const [location, setLocation] = useState('');
+  const [bio, setBio] = useState('');
+  const [goals, setGoals] = useState([]);
 
   useEffect(() => {
     const sendGetRequest = async () => {
@@ -23,6 +26,53 @@ export function Blog() {
     };
     sendGetRequest();
   }, [username]); 
+  
+  useEffect(() => {
+    const fetchBlogInfo = async () => {
+      const username = localStorage.getItem("username");
+      const response = await fetch(`/api/user/blog-info/${username}`);
+      if (response.ok) {
+        const data = await response.json();
+        setLocation(data.location || '');
+        setBio(data.bio || '');
+        setGoals(data.goals || []);
+      }
+    };
+    fetchBlogInfo();
+  }, []);
+
+  const handleSave = async () => {
+    const username = localStorage.getItem("username");
+    try {
+      const response = await fetch('/api/blog-info', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, location, bio, goals }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      console.log('Blog info saved successfully');
+    } catch (error) {
+      console.error('Failed to save blog info', error);
+    }
+  };
+
+  const addGoal = () => setGoals([...goals, '']);
+  const updateGoal = (index, value) => {
+    const updatedGoals = [...goals];
+    updatedGoals[index] = value;
+    setGoals(updatedGoals);
+  };
+  const removeGoal = (index) => {
+    const updatedGoals = [...goals];
+    updatedGoals.splice(index, 1);
+    setGoals(updatedGoals);
+  };
+
 
   const updateMonthInfo = (increment) => {
     setMonthInfo(([month, year]) => {
@@ -53,11 +103,11 @@ export function Blog() {
         <div className="blog-body">
           <div className="blog-info">
             <div className="blog-title" >
-            <h2>{capitalizeUsername(username)}'s Blog</h2>
+              <h2>{capitalizeUsername(username)}'s Blog</h2>
             </div>
             <div className="blog-location">
               <h3>Location:</h3>
-                <p contenteditable="true" >Alpine, UT, USA</p>
+              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
             </div>
             <div className="blog-member-since">
               <h3>Member since:</h3>
@@ -65,19 +115,23 @@ export function Blog() {
             </div>
             <div className="blog-bio">
               <h3>Bio:</h3>
-              <p contenteditable="true">Run fast, live slow. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quasi, iste tenetur natus optio sapiente, voluptatibus facere inventore culpa dicta, quod adipisci nesciunt eligendi explicabo dolorem. Ab veritatis cum laborum.</p>
+              <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
             </div>
-            <div className="blog-goals" >
-              <h3 contenteditable="true">Goals:</h3>
-              <ul>
-                <li>Complete a marathon by the end of the year.</li>
-                <li>Improve running pace by 10% within the next three months.</li>
-                <li>Explore and document running trails in different locations.</li>
-                <li>Share weekly training insights to inspire others in the running community.</li>
-                <li>Experiment with new cross-training activities to enhance overall fitness.</li>
-                <li>Attend a running workshop or training program for continuous learning.</li>
-              </ul>
+            <div className="blog-goals">
+              <h3>Goals:</h3>
+              {goals.map((goal, index) => (
+                <div key={index}>
+                <input
+                  type="text"
+                  value={goal}
+                  onChange={(e) => updateGoal(index, e.target.value)}
+                />
+                <button onClick={() => removeGoal(index)}>Remove</button>
+                </div>
+              ))}
+              <button onClick={addGoal}>Add Goal</button>
             </div>
+          <button onClick={handleSave}>Save</button>
           </div>
           <div className="blog-and-calendar">
           <div className="calendar">

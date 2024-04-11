@@ -44,6 +44,46 @@ function addRun(run) {
     runCollection.insertOne(run);
 }
 
+async function updateUserBlogInfo(username, blogInfo) {
+  const { location, bio, goals } = blogInfo;
+  const result = await userCollection.updateOne(
+    { username: username },
+    {
+      $set: {
+        location: location,
+        bio: bio,
+        goals: goals,
+      },
+    }
+  );
+  
+  if (result.matchedCount === 0) {
+    throw new Error('No user found with the given username.');
+  }
+
+  return { username, location, bio, goals };
+}
+
+async function getUserBlogInfo(username) {
+  const userBlogInfo = await userCollection.findOne(
+    { username: username },
+    {
+      projection: {
+        _id: 0,
+        location: 1,
+        bio: 1,
+        goals: 1,
+      },
+    }
+  );
+
+  if (!userBlogInfo) {
+    throw new Error('No user found with the given username.');
+  }
+
+  return userBlogInfo;
+}
+
 function getRuns() {
     const query = {
         date: { $exists: true },
@@ -58,10 +98,17 @@ function getRuns() {
     return runCollection.find(query).toArray();
 }
 
+
+
+
+
+
 module.exports = {
     getUser,
     getUserByToken,
     createUser,
     addRun,
     getRuns,
+    updateUserBlogInfo, // Add this line
+    getUserBlogInfo
   };
