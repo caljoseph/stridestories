@@ -4,9 +4,6 @@ import Button from 'react-bootstrap/Button';
 import './login.css';
 
 export function Unauthenticated(props) {
-    // const [username, setUsername] = React.useState(props.username);
-    // const [password, setPassword] = React.useState('');
-
     async function validateAndLogin() {
         const userNameInput = document.querySelector("#name");
         const passwordInput = document.querySelector("#password");

@@ -3,6 +3,15 @@ import './blog.css';
 
 
 export function Blog() {
+
+
+
+
+
+
+
+
+  
   return (
     <main>
         <div className="blog-body">

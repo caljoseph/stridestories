@@ -23,9 +23,16 @@ export default function App() {
                     <h1>Stridestories</h1>
                     <nav>
                     <ul className="menu-bar">
+                        { authState === AuthState.Authenticated && (
+                        <li id="login">
+                            < NavLink to=''>Home</NavLink>
+                        </li>
+                        )}
+                        { authState === AuthState.Unauthenticated && (
                         <li id="login">
                             < NavLink to=''>Login</NavLink>
                         </li>
+                        )}
 
                         { authState === AuthState.Authenticated && (
                         <li id="my-blog">
