@@ -203,7 +203,7 @@ export function Blog() {
                 {isEditing && <button className='remove-goal' onClick={() => removeGoal(index)}>X</button>}
               </div>
             ))}          
-            {isEditing && <button className='add-goal' onClick={addGoal}>Add Goal</button>}
+            {isEditing && <button className='add-goal' onClick={addGoal}>New Goal</button>}
             {!isEditing ? (
           <button className='edit-button' onClick={handleEdit}>Edit</button>
         ) : (

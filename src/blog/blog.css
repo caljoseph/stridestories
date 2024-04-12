@@ -72,6 +72,7 @@
     font-weight: bold;
     color: rgb(90, 53, 27);
 }
+
 .blog-goals input.readonly,
 .blog-goals input.editable {
     color: rgb(90, 53, 27); /* Color for text inside input fields */
@@ -107,9 +108,11 @@
 #next-month {
     width: 20%;
     margin-left: 2px;
+    border-radius: 8px;
+    border: 3px solid white ;
+    box-shadow: 1px 1px 5px 0px #333 ;
     /* background-color: #c07a3c; */
     background: #d18848;
-    border: none;
     border-radius: 5px;
     padding: 5px;
     color: white;
@@ -125,17 +128,7 @@
     white-space: nowrap;
 }
 
-#prev-month:hover,
-#next-month:hover {
-    background-color: #e0915a; 
 
-}
-
-#prev-month:active,
-#next-month:active {
-    background-color: #a6632e; 
-
-}
 #next-month {
     margin-right: 2px;
 }
@@ -315,18 +308,20 @@ th, td {
 .remove-goal, .cancel-button {
     background: rgb(232, 35, 28) ;
 }
-.save-button {
+.save-button, .edit-button {
     background: #c07a3c;
 }
 
 
-.remove-goal:hover, .edit-button:hover, .save-button:hover, .cancel-button:hover, .add-goal:hover{
+.remove-goal:hover, .edit-button:hover, .save-button:hover, .cancel-button:hover, .add-goal:hover, #prev-month:hover,
+#next-month:hover {
     background: white !important;
     color: rgb(135, 83, 45) !important;
 
     transform: scale(1.05) !important;
 }
-.remove-goal:active, .edit-button:active, .save-button:hover, .cancel-button:hover, .add-goal:hover{
+.remove-goal:active, .edit-button:active, .save-button:active, .cancel-button:active, .add-goal:active, #prev-month:active,
+#next-month:active {
     transform: scale(0.95) !important;
 }
 #goal-list {
