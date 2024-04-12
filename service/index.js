@@ -28,6 +28,11 @@ app.set('trust proxy', true);
 // Router for service endpoints
 const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
+// GetRuns
+apiRouter.get('/runs', async (req, res) => {
+  const runs = await DB.getRuns();
+  res.send(runs);
+});
 
 // CreateAuth token for a new user
 apiRouter.post('/auth/create', async (req, res) => {
@@ -80,6 +85,7 @@ var secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
 secureApiRouter.use(async (req, res, next) => {
+  console.log('got to this boi')
   authToken = req.cookies[authCookieName];
   const user = await DB.getUserByToken(authToken);
   if (user) {
@@ -89,11 +95,7 @@ secureApiRouter.use(async (req, res, next) => {
   }
 });
 
-// GetRuns
-apiRouter.get('/runs', async (req, res) => {
-  const runs = await DB.getRuns();
-  res.send(runs);
-});
+
 
 
 // Endpoint to save blog info
