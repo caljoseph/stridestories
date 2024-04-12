@@ -9,6 +9,7 @@
     font-style: italic;
     background-color: white;
     padding: 8px;
+    width: 75%;
 }
 
 #quote {
@@ -16,6 +17,8 @@
     font-style: italic;
     background-color: white;
     padding: 8px;
+    width: 75%;
+
 }
 #picture {
     overflow: auto;
