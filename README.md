@@ -83,3 +83,12 @@ I laid out the basic structure of the blog with this deliverable.
     When another user submits a new run, that pings my server to let any websocket connections on the leaderboard page to pull the new run and add it to the leaderboard.
 ### WebSocket data displayed in the application interface
     This enables live updates to my leaderboards both for cumulative monthly milage and longest run, so logged in users and guest can see everyone's distances.
+## React!:
+### Bundled using Vite
+    Indeed it is! I'm not quite sure what to say about this
+### Multiple functional React components
+    Every one of my pages, excepting about has some react components! The most interesting ones are on the blog where I built in some new functionality to edit blog information and store/retrieve that from the database.
+### React router
+    My app.jsx indeed routes the components based on the navigation bar
+### React hooks
+    I learned a lot here, having to use useState, useEffect, useRef to make everything work. It is nice to replace all my variables with useStates. Take a look at the blog if you want to see all that I did but this was a big learning experience to remake everything from the ground up

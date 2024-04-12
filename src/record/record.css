@@ -1,21 +1,3 @@
-body {
-    display: flex;
-    margin: 0;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-main {
-    flex: 1; 
-}
-
-footer {
-    height: 30px;
-    position: sticky;
-    bottom: 0;
-    padding: 10px; 
-    z-index: 1000; 
-}
 .run-form {
     background: -webkit-linear-gradient(#c07a3c, #905826);
     width: 70%;
@@ -59,13 +41,14 @@ footer {
     justify-content: space-around;
     width: 100%;
     height: auto;
+    padding-top: 16px;
 }
 .left-column,
 .right-column{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: stretch;
+    justify-content: space-between;
     flex: 1;
     gap: 0px;
     min-width: 0;
@@ -77,6 +60,10 @@ footer {
     width: 90%;
     margin:0;
 }
+#notes-group {
+    flex-basis: 150px;;
+}
+
 .form-group label{
     font-size: 24px;
     color:white;
@@ -87,7 +74,7 @@ footer {
 .form-group textarea {
     width: 100%;
 
-    background: #ffdbc7;
+    background: #ffdbc7 !important;
     border-radius: 16px;
     border: 5px solid white;
     text-align: center;
@@ -120,7 +107,7 @@ footer {
 }
 
   
-.btn-primary {
+#submit {
     border-radius: 16px !important;
     border: 5px solid white !important;
     box-shadow: 2px 2px 10px 0px #333 !important;
@@ -134,13 +121,12 @@ footer {
     margin: 16px !important;
 }
 
-.btn-primary:hover {
+#submit:hover {
     background: white !important;
     color: rgb(135, 83, 45) !important;
 
     transform: scale(1.05) !important;
 }
-
-.btn-primary:active {
+#submit:active {
     transform: scale(0.95) !important;
 }

@@ -1,0 +1,149 @@
+* {
+    font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    min-width: 375px;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    flex: 0 80px;
+    align-items: center;
+    background-color: rgb(135, 83, 45);
+    padding: 16px;
+    border-bottom: 1px solid #ffdbc7;
+}
+header h1 {
+    margin:0;
+    margin-left: 16px;
+    background: -webkit-linear-gradient(#ffdbc7, #dc9b78);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+    font-weight: 900;
+}
+
+nav {
+    margin-left: auto;
+    margin-right:16px;
+    display: flex;
+}
+
+footer {
+    background-color: rgb(135, 83, 45);
+    border-top: 1px solid #ffdbc7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: #ffdbc7;
+    margin-top: auto;
+    flex: 0 30px;
+
+}
+
+main {
+    background-color: #ffdbc7;
+    background-image: linear-gradient(
+      45deg,
+      #c07a3c 25%,
+      transparent 25%,
+      transparent 75%,
+      #c07a3c 75%,
+      #c07a3c
+    ),
+    linear-gradient(
+      -45deg,
+      #c07a3c 25%,
+      transparent 25%,
+      transparent 75%,
+      #c07a3c 75%,
+      #c07a3c
+    );
+    background-size: 60px 60px;
+    background-repeat: repeat;
+    padding: 16px;;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* menu and navigation styling/ animation */
+.menu-bar {
+    flex: 1;
+    display: flex;
+    list-style: none;
+    text-decoration: none;
+    padding: 0;
+    margin:0;
+}
+.menu-bar li a{
+    font-weight: bold;
+    font-size: 24px;
+    text-decoration: none;
+    margin: 0 16px;
+    color: #ffdbc7;
+    transition: all .2s ease-in-out;
+    
+}
+.menu-bar li {
+    transition: all .2s ease-in-out;
+    margin: 0;
+}    
+#login:hover{
+    transform: scale(1.1); 
+}
+#my-blog:hover{
+    transform: scale(1.1); 
+}
+#leaderboard:hover{
+    transform: scale(1.1); 
+}
+#about:hover{
+    transform: scale(1.1); 
+}
+#record:hover{
+    transform: scale(1.1); 
+}
+#login a:hover{
+    color: rgb(233, 98, 86);
+}
+#my-blog a:hover{
+    color: rgb(114, 166, 212);
+    transition: transform 0.3s ease;
+
+    transform: scale(1.1);
+}
+#leaderboard a:hover{
+    color: rgb(251, 214, 129);
+    transition: transform 0.3s ease;
+
+    transform: scale(1.1);
+}
+#about a:hover{
+    color: rgb(133, 222, 146);
+    transition: transform 0.3s ease;
+
+    transform: scale(1.1);
+}
+#record a:hover{
+    color: rgb(255, 163, 77);
+    transition: transform 0.3s ease;
+
+    transform: scale(1.1);
+}
+
+  /* login box  */

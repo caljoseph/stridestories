@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const DB = require('./database.js');
 const WebSocket = require('ws');
 
+const path = require('path');
 const app = express();
 const authCookieName = 'token';
 const server = require('http').createServer(app);
@@ -94,6 +95,34 @@ secureApiRouter.get('/runs', async (req, res) => {
   res.send(runs);
 });
 
+
+// Endpoint to save blog info
+secureApiRouter.post('/blog-info', async (req, res) => {
+  const { username, location, bio, goals } = req.body;
+  try {
+    // Replace with your actual database update logic
+    await DB.updateUserBlogInfo(username, { location, bio, goals });
+    res.json({ message: 'Blog info updated successfully' });
+  } catch (error) {
+    console.error('Failed to update blog info', error);
+    res.status(500).send({ msg: 'Failed to update blog info' });
+  }
+});
+
+// Endpoint to get blog info
+secureApiRouter.get('/user/blog-info/:username', async (req, res) => {
+  const { username } = req.params;
+  try {
+    // Replace with your actual database query logic
+    const userBlogInfo = await DB.getUserBlogInfo(username);
+    res.json(userBlogInfo);
+  } catch (error) {
+    console.error('Failed to fetch blog info', error);
+    res.status(404).send({ msg: 'Failed to fetch blog info' });
+  }
+});
+
+
 // SubmitRuns
 secureApiRouter.post('/run', async (req, res) => {
   const run = { ...req.body, ip: req.ip };
@@ -128,7 +157,7 @@ function setAuthCookie(res, authToken) {
 
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
-  res.sendFile('index.html', { root: 'public' });
+  res.sendFile('index.html', { root: path.join(__dirname, '../') });
 });
 
 server.listen(port, () => {
