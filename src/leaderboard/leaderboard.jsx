@@ -150,7 +150,7 @@ export function Leaderboard() {
               {sortedLongest.slice(0, 10).map((record, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td className="username-box">{record.username}</td>
+                  <td className="username-field">{record.username}</td>
                   <td>{parseFloat(record.distance).toFixed(2)}</td>
                 </tr>
               ))}
