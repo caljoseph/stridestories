@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { RunRecord } from '../runRecord.js';
+import Toast from '../toast/toast.jsx';
 import './record.css';
 
 
@@ -12,6 +13,7 @@ export function Record() {
   const [runType, setRunType] = useState('Jog'); 
   const [notes, setNotes] = useState('');
   const [location, setLocation] = useState('');
+  const [showToast, setShowToast] = useState(false);
 
   const socketRef = useRef(null);
 
@@ -57,7 +59,8 @@ export function Record() {
         socketRef.current.send(JSON.stringify({ type: 'newRunSubmitted' }));
       }
       await sendPostRequest("/api/run", record);
-      console.log("Run added successfully!");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 10000); 
 
       setTitle('');
       setDate('');
@@ -131,6 +134,7 @@ export function Record() {
           <button type="submit" className="btn btn-primary" id="submit">Submit</button>
         </form>
       </div>
+      <Toast show={showToast} message="Run added!" onClose={() => setShowToast(false)} />
     </main>
   );
 }
