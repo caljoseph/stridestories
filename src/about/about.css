@@ -5,7 +5,7 @@
 }
 
 #tagline {
-    font-size: 24px;
+    font-size: 32px;
     font-style: italic;
     background-color: white;
     padding: 8px;
@@ -13,12 +13,22 @@
 }
 
 #quote {
-    font-size: 24px;
+    display: flex; 
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+}
+#quote-text, #quote-author {
+    font-size: 32px;
     font-style: italic;
     background-color: white;
     padding: 8px;
     width: 75%;
+    text-align: center;
 
+}
+#quote-author {
+    font-weight: bold;
 }
 #picture {
     overflow: auto;

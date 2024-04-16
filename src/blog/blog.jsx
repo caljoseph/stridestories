@@ -128,20 +128,20 @@ export function Blog() {
     textAreaRefs.current.forEach(textArea => {
       if (textArea) {
         textArea.style.height = "0px";  
-        textArea.style.height = textArea.scrollHeight + "px";
+        textArea.style.height = textArea.scrollHeight + 8 + "px";
       }
     });
   }, [goals, isEditing]);
   useEffect(() => {
     if (bioRef.current) {
       bioRef.current.style.height = "0px"; 
-      bioRef.current.style.height = bioRef.current.scrollHeight + "px";
+      bioRef.current.style.height = bioRef.current.scrollHeight + 40 + "px";
     }
   }, [bio, isEditing]);  
   useEffect(() => {
     if (locationRef.current) {
       locationRef.current.style.height = "0px"; 
-      locationRef.current.style.height = locationRef.current.scrollHeight + "px";
+      locationRef.current.style.height = locationRef.current.scrollHeight + 8 + "px";
     }
   }, [bio, isEditing]); 
 

@@ -55,6 +55,12 @@
     margin-bottom: 10px;
     border-bottom: 1px dashed rgb(135, 83, 45);
   }
+  .blog-goals h3 {
+    padding-bottom: 10px;
+    border-bottom: 2px dashed rgb(135, 83, 45);
+    margin-bottom: 8px;
+
+  }
 .blog-location,
     .blog-member-since,
     .blog-bio,
@@ -281,13 +287,16 @@ th, td {
     flex-grow: 1;
     border-bottom: dashed rgb(135, 83, 45);;
     padding-bottom: 8px;
+    margin-top: 8px;
     margin-bottom: 8px;
     width: 100%;
     height: 100%;
     justify-content:stretch;
 }
 .goal-container textarea {
+
     flex-basis: 100%;
+    color: rgb(90, 53, 27);
 }
 .goal-container .editable {
     
@@ -310,6 +319,9 @@ th, td {
 }
 .save-button, .edit-button {
     background: #c07a3c;
+}
+.edit-button {
+    margin-top: 32px;
 }
 
 
