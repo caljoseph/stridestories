@@ -18,7 +18,7 @@ func NewRouter(s *Server) *gin.Engine {
 	api.DELETE("/logout", s.logoutUser)
 
 	api.GET("/runs/:username", s.getRunsByUser)
-	api.GET("/runs/longest_run_by_month", s.getLongestRunsByMonth)
+	api.GET("/runs/longest_runs_by_month", s.getLongestRunsByMonth)
 	api.GET("/users/:username", s.getUserByUsername)
 	api.GET("/runs/longest_total_distance_by_month", s.getLongestTotalDistanceByMonth)
 
