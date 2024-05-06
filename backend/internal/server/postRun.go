@@ -14,6 +14,7 @@ type postRunRequest struct {
 	Notes    string             `json:"notes" binding:"required"`
 	Location string             `json:"location" binding:"required"`
 	Title    string             `json:"title" binding:"required"`
+	Username string             `json:"username" binding:"required"`
 }
 
 func (s *Server) postRun(c *gin.Context) {
@@ -29,7 +30,7 @@ func (s *Server) postRun(c *gin.Context) {
 
 	// Validate RunType
 	switch req.RunType {
-	case "jog", "trail", "interval", "race":
+	case "Jog", "Trail", "Interval", "Race":
 		// valid
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{

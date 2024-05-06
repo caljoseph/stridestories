@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import { RunRecord } from '../runRecord.js';
+import React, {useEffect, useRef, useState} from 'react';
+import {RunRecord} from '../runRecord.js';
 import Toast from '../toast/toast.jsx';
 import './record.css';
 
@@ -8,8 +8,8 @@ export function Record() {
 
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
-  const [distance, setDistance] = useState('');
-  const [duration, setDuration] = useState('');
+  const [distance, setDistance] = useState();
+  const [duration, setDuration] = useState();
   const [runType, setRunType] = useState('Jog'); 
   const [notes, setNotes] = useState('');
   const [location, setLocation] = useState('');
@@ -42,8 +42,12 @@ export function Record() {
   
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDateChange = (e) => setDate(e.target.value);
-  const handleDistanceChange = (e) => setDistance(e.target.value);
-  const handleDurationChange = (e) => setDuration(e.target.value);
+  const handleDistanceChange = (e) => {
+    setDistance(e.target.value ? parseFloat(e.target.value) : undefined);
+  };
+  const handleDurationChange = (e) => {
+    setDuration(e.target.value ? parseInt(e.target.value, 10) : undefined);
+  }
   const handleRunTypeChange = (e) => setRunType(e.target.value);
   const handleNotesChange = (e) => setNotes(e.target.value);
   const handleLocationChange = (e) => setLocation(e.target.value);
@@ -52,20 +56,20 @@ export function Record() {
     event.preventDefault(); 
 
     const username = localStorage.getItem("username");
-    const record = new RunRecord(date, distance, duration, runType, notes, username, title, location);
+    const record = new RunRecord(new Date(date).toISOString(), distance, duration, runType, notes, username, title, location);
 
     try {
       if(socketRef.current) {
         socketRef.current.send(JSON.stringify({ type: 'newRunSubmitted' }));
       }
-      await sendPostRequest("/api/run", record);
+      await postRun("/api/private/runs", record);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 10000); 
 
       setTitle('');
       setDate('');
-      setDistance('');
-      setDuration('');
+      setDistance("");
+      setDuration("");
       setRunType('Jog'); 
       setNotes('');
       setLocation('');
@@ -74,7 +78,7 @@ export function Record() {
     }
   }
   
-  async function sendPostRequest(url, data) {
+  async function postRun(url, data) {
       console.log("Sending POST request...");
       const response = await fetch(url, {
           method: 'POST',
@@ -84,8 +88,7 @@ export function Record() {
       if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const responseData = await response.json();
-      return responseData;
+    return await response.json();
   }
 
 
@@ -105,11 +108,11 @@ export function Record() {
               </div>
               <div className="form-group">
                 <label htmlFor="distance">Distance (miles):</label>
-                <input type="number" className="form-control" value={distance} onChange={handleDistanceChange} step="0.1" required placeholder="Miles"/>
+                <input type="number" className="form-control" value={distance || ""} onChange={handleDistanceChange} step="0.1" required placeholder="Miles"/>
               </div>
               <div className="form-group">
                 <label htmlFor="duration">Duration (minutes):</label>
-                <input type="number" className="form-control" value={duration} onChange={handleDurationChange} required placeholder="Minutes"/>
+                <input type="number" className="form-control" value={duration || ""} onChange={handleDurationChange} required placeholder="Minutes"/>
               </div>
             </div>
             <div className="right-column">

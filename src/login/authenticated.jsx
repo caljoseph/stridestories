@@ -22,7 +22,7 @@ async function logout() {
     const username = localStorage.getItem('username');
     if (username) {
         try {
-            await fetch('/api/auth/logout', {
+            await fetch('/api/logout', {
                 method: 'DELETE'
             });
             console.log('Logged out successfully');

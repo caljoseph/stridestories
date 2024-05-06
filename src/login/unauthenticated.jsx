@@ -88,7 +88,7 @@ export function Unauthenticated(props) {
       async function login(body) {
       
         try {
-            await sendPostRequest("/api/auth/login", body);
+            await sendPostRequest("/api/login", body);
             console.log("Logged in successfully")
         } catch (error) {
             return false;
@@ -99,7 +99,7 @@ export function Unauthenticated(props) {
       async function register(body) {
       
         try {
-            await sendPostRequest("/api/auth/create", body);
+            await sendPostRequest("/api/register", body);
             console.log("Registered successfully")
         } catch (error) {
             return false;

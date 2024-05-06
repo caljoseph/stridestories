@@ -4,23 +4,23 @@ import "github.com/gin-gonic/gin"
 
 func NewRouter(s *Server) *gin.Engine {
 	r := gin.Default()
+	api := r.Group("/api")
 
-	private := r.Group("/private")
+	private := api.Group("/private")
 	private.Use(s.authMiddleware())
 
 	private.POST("/runs", s.postRun)
 	private.PATCH("/users", s.updateBlog)
 
-	r.POST("/register", s.registerUser)
-	r.POST("/login", s.loginUser)
+	api.POST("/register", s.registerUser)
+	api.POST("/login", s.loginUser)
 
-	r.DELETE("/logout", s.logoutUser)
+	api.DELETE("/logout", s.logoutUser)
 
-	//r.GET("/runs/:id", s.getRunById)
-	r.GET("/runs/:username", s.getRunsByUser)
-	r.GET("/runs/longest_run_by_month", s.getLongestRunsByMonth)
-	r.GET("/users/:username", s.getUserByUsername)
-	r.GET("/runs/longest_total_distance_by_month", s.getLongestTotalDistanceByMonth)
+	api.GET("/runs/:username", s.getRunsByUser)
+	api.GET("/runs/longest_run_by_month", s.getLongestRunsByMonth)
+	api.GET("/users/:username", s.getUserByUsername)
+	api.GET("/runs/longest_total_distance_by_month", s.getLongestTotalDistanceByMonth)
 
 	return r
 }

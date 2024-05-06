@@ -3,7 +3,7 @@ import './blog.css';
 
 
 export function Blog() {
-  const [allRunRecords, setAllRunRecords] = useState([]);
+  const [runRecords, setRunRecords] = useState([]);
   const [monthInfo, setMonthInfo] = useState([new Date().getMonth(), new Date().getFullYear()]);
   const username = localStorage.getItem("username");
   const [location, setLocation] = useState('');
@@ -21,32 +21,32 @@ export function Blog() {
   const locationRef = useRef(null);
 
   useEffect(() => {
-    const sendGetRequest = async () => {
+    const fetchRuns = async () => {
       try {
-        const response = await fetch("/api/runs");
+        const response = await fetch(`/api/runs/${username}?month=${monthInfo[0] + 1}&year=${monthInfo[1]}`);
         if (!response.ok) {
           throw new Error(`Sorry! Couldn't get runs: ${response.statusText}`);
         }
         const data = await response.json();
         console.log("Runs loaded successfully");
-        setAllRunRecords(data.filter(record => record.username === username));
+        setRunRecords(data.runsList);
       } catch (error) {
         console.error("Couldn't load runs", error.message);
       }
     };
-    sendGetRequest();
-  }, [username]); 
+    fetchRuns();
+  }, [username, monthInfo]);
   
   useEffect(() => {
     const fetchBlogInfo = async () => {
         const username = localStorage.getItem("username");
-        const response = await fetch(`/api/user/blog-info/${username}`);
+        const response = await fetch(`/api/users/${username}`);
         if (response.ok) {
             const data = await response.json();
-            setLocation(data.location || '');
-            setBio(data.bio || '');
-            setGoals(data.goals || []);
-            setMemberSince(data.memberSince ? new Date(data.memberSince).toLocaleDateString() : 'Before this feature was implemented :)');
+            setLocation(data.Location || '');
+            setBio(data.Bio || '');
+            setGoals(data.Goals || []);
+            setMemberSince(data.MemberSince ? new Date(data.MemberSince).toLocaleDateString() : 'Before this feature was implemented :)');
           }
     };
     fetchBlogInfo();
@@ -69,12 +69,12 @@ export function Blog() {
   const handleSave = async () => {
     const username = localStorage.getItem("username");
     try {
-      const response = await fetch('/api/blog-info', {
-        method: 'POST',
+      const response = await fetch('/api/private/users', {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, location, bio, goals }),
+        body: JSON.stringify({ location, bio, goals }),
       });
 
       if (!response.ok) {
@@ -118,11 +118,6 @@ export function Blog() {
 
   const capitalizeUsername = (username) => username.charAt(0).toUpperCase() + username.slice(1);
 
-  // Restrict records to current month
-  const currentMonthRecords = allRunRecords.filter(record => {
-    const recordDate = new Date(record.date);
-    return recordDate.getMonth() === monthInfo[0] && recordDate.getFullYear() === monthInfo[1];
-  });
   
   useEffect(() => {
     textAreaRefs.current.forEach(textArea => {
@@ -223,37 +218,37 @@ export function Blog() {
           <button id="next-month" onClick={() => updateMonthInfo(1)}>Next Month</button>
         </div>
         <div className="blog-content">
-          {currentMonthRecords.map((record, index) => (
-            <div key={index} className="blog-entry">
-              <div className="entry-date-location">
-                <p>{record.date}</p>
-                <p>{record.location}</p>
-              </div>
-              <div className="entry-title">
-                <h3>{record.title}</h3>
-              </div>
-              <div className="entry-description">
-                <p>{record.notes}</p>
-              </div>
-              <div className="entry-stats">
-                <table>
-                  <thead>
+          {Array.isArray(runRecords) && runRecords.map((record, index) => (
+              <div key={index} className="blog-entry">
+                <div className="entry-date-location">
+                  <p>{new Date(record.date).toLocaleDateString()}</p>
+                  <p>{record.location}</p>
+                </div>
+                <div className="entry-title">
+                  <h3>{record.title}</h3>
+                </div>
+                <div className="entry-description">
+                  <p>{record.notes}</p>
+                </div>
+                <div className="entry-stats">
+                  <table>
+                    <thead>
                     <tr>
                       <th id="duration">Duration</th>
                       <th id="pace">Pace</th>
                       <th id="distance">Distance</th>
                     </tr>
-                  </thead>
-                  <tbody>
+                    </thead>
+                    <tbody>
                     <tr>
                       <td id="duration-info">{record.duration} mins</td>
                       <td id="pace-info">{calculatePace(record.duration, record.distance)}</td>
                       <td id="distance-info">{record.distance} miles</td>
                     </tr>
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
           ))}
         </div>
       </div>
