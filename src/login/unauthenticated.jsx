@@ -33,7 +33,7 @@ export function Unauthenticated(props) {
         if (await login(body)) {
           localStorage.setItem('username', body.username);
           props.onLogin(body.username);
-          return;
+
         } else {
           document.getElementById("username-error").innerText = "";
           userNameInput.classList.add("is-invalid");

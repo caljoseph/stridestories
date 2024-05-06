@@ -102,7 +102,6 @@ secureApiRouter.use(async (req, res, next) => {
 secureApiRouter.post('/blog-info', async (req, res) => {
   const { username, location, bio, goals } = req.body;
   try {
-    // Replace with your actual database update logic
     await DB.updateUserBlogInfo(username, { location, bio, goals });
     res.json({ message: 'Blog info updated successfully' });
   } catch (error) {
@@ -115,7 +114,6 @@ secureApiRouter.post('/blog-info', async (req, res) => {
 secureApiRouter.get('/user/blog-info/:username', async (req, res) => {
   const { username } = req.params;
   try {
-    // Replace with your actual database query logic
     const userBlogInfo = await DB.getUserBlogInfo(username);
     res.json(userBlogInfo);
   } catch (error) {
