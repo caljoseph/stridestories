@@ -14,7 +14,6 @@ type postRunRequest struct {
 	Notes    string             `json:"notes" binding:"required"`
 	Location string             `json:"location" binding:"required"`
 	Title    string             `json:"title" binding:"required"`
-	Username string             `json:"username" binding:"required"`
 }
 
 func (s *Server) postRun(c *gin.Context) {

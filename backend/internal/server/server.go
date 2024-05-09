@@ -1,12 +1,10 @@
 package server
 
 import (
-	"context"
+	"backend/internal/mongoutils"
 	"errors"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
 )
 
 const dbName = "startup"
@@ -17,23 +15,18 @@ type Server struct {
 	db *mongo.Database
 }
 
-func NewServer(connString string) (*Server, error) {
-	// Create a context to use when connecting to the DB.
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	// Connect to mongo.
-	clientOptions := options.Client().ApplyURI(connString)
-	client, err := mongo.Connect(ctx, clientOptions)
+func NewServer(connString string) (server *Server, closeDBConnection func(), err error) {
+	client, closeDBConnection, err := mongoutils.NewClient(connString)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrNewServerFailed, err)
+		return nil, nil, fmt.Errorf("%w: %w", ErrNewServerFailed, err)
 	}
 
 	// Get our database.
 	db := client.Database(dbName)
 
 	// Create and return the Server type.
-	return &Server{
+	server = &Server{
 		db: db,
-	}, nil
+	}
+	return server, closeDBConnection, nil
 }

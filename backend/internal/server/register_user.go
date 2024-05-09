@@ -1,29 +1,33 @@
 package server
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
 )
 
-type createUserRequest struct {
+type registerUserRequest struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
 func (s *Server) registerUser(c *gin.Context) {
-	var req createUserRequest
+	var req registerUserRequest
 
 	if err := c.ShouldBind(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
 		return
 	}
 
-	user, err := s.CreateUser(c, req.Username, req.Password)
+	user, err := s.createUser(c, req.Username, req.Password)
 	if err != nil {
-		if err.Error() == fmt.Sprintf("username %s already exists", req.Username) {
-			c.JSON(http.StatusConflict, gin.H{"msg": "Existing user"})
+		if errors.Is(err, ErrExistingUser) {
+			c.JSON(http.StatusConflict, gin.H{"error": ErrExistingUser.Error()})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
@@ -38,7 +42,7 @@ func (s *Server) registerUser(c *gin.Context) {
 		return
 	}
 	setAuthCookie(c, auth)
-	c.JSON(http.StatusOK, gin.H{"id": user.ID})
+	c.JSON(http.StatusOK, gin.H{"username": user.Username})
 }
 
 func (s *Server) createAuthTokenForUser(c *gin.Context, username string) (string, error) {
@@ -51,5 +55,5 @@ func (s *Server) createAuthTokenForUser(c *gin.Context, username string) (string
 }
 
 func setAuthCookie(c *gin.Context, token string) {
-	c.SetCookie("authToken", token, 3600, "/", "", false, true)
+	c.SetCookie(authCookieName, token, 3600, "/", "", false, true)
 }

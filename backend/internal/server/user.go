@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,27 +13,29 @@ import (
 const usersCollectionName = "users"
 const authCollectionName = "auth"
 
-type User struct {
+var ErrExistingUser = errors.New("this username is already taken")
+
+type user struct {
 	ID          primitive.ObjectID `bson:"_id"`
 	Username    string             `bson:"username"`
 	Password    string             `bson:"password"`
 	Location    string             `bson:"location"`
 	Bio         string             `bson:"bio"`
 	Goals       []string           `bson:"goals"`
-	MemberSince primitive.DateTime `bson:"memberSince"`
+	MemberSince primitive.DateTime `bson:"member_since"`
 }
 
-func (s *Server) GetUser(c *gin.Context, username string) (*User, error) {
-	var user User
+func (s *Server) getUser(c *gin.Context, username string) (*user, error) {
+	var user user
 
 	if err := s.db.Collection(usersCollectionName).FindOne(c, bson.M{"username": username}).Decode(&user); err != nil {
 		return nil, err
 	}
 	return &user, nil
 }
-func (s *Server) CreateUser(c *gin.Context, username string, password string) (*User, error) {
-	if user, _ := s.GetUser(c, username); user != nil {
-		return nil, fmt.Errorf("username %s already exists", username)
+func (s *Server) createUser(c *gin.Context, username string, password string) (*user, error) {
+	if user, _ := s.getUser(c, username); user != nil {
+		return nil, ErrExistingUser
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -40,7 +43,7 @@ func (s *Server) CreateUser(c *gin.Context, username string, password string) (*
 		return nil, fmt.Errorf("error hashing password: %w", err)
 	}
 
-	newUser := &User{
+	newUser := &user{
 		ID:          primitive.NewObjectID(),
 		Username:    username,
 		Password:    string(hashedPassword),

@@ -6,10 +6,12 @@ import (
 	"net/http"
 )
 
+const authCookieName = "authToken"
+
 func (s *Server) authMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Retrieve the token from the cookie
-		token, err := c.Cookie("authToken")
+		token, err := c.Cookie(authCookieName)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "No token provided"})
 			c.Abort()

@@ -3,18 +3,18 @@ package server
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
+	"time"
 )
 
 type getUserResponse struct {
-	ID          primitive.ObjectID
-	Username    string
-	Location    string
-	Bio         string
-	Goals       []string
-	MemberSince primitive.DateTime
+	ID          string   `json:"id"`
+	Username    string   `json:"username"`
+	Location    string   `json:"location"`
+	Bio         string   `json:"bio"`
+	Goals       []string `json:"goals"`
+	MemberSince string   `json:"member_since"`
 }
 
 func (s *Server) getUserByUsername(c *gin.Context) {
@@ -25,7 +25,7 @@ func (s *Server) getUserByUsername(c *gin.Context) {
 		})
 		return
 	}
-	user, err := s.GetUser(c, username)
+	user, err := s.getUser(c, username)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			c.JSON(http.StatusNotFound, gin.H{
@@ -41,11 +41,11 @@ func (s *Server) getUserByUsername(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, getUserResponse{
-		ID:          user.ID,
+		ID:          user.ID.Hex(),
 		Username:    user.Username,
 		Location:    user.Location,
 		Bio:         user.Bio,
 		Goals:       user.Goals,
-		MemberSince: user.MemberSince,
+		MemberSince: time.Unix(int64(user.MemberSince)/1000, (int64(user.MemberSince)%1000)*1000000).Format("2006-01-02"),
 	})
 }

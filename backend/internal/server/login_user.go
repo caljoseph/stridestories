@@ -23,7 +23,7 @@ func (s *Server) loginUser(c *gin.Context) {
 		return
 	}
 
-	user, err := s.GetUser(c, req.Username)
+	user, err := s.getUser(c, req.Username)
 	if user == nil || err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
 		return
@@ -42,5 +42,5 @@ func (s *Server) loginUser(c *gin.Context) {
 		return
 	}
 	setAuthCookie(c, auth)
-	c.JSON(http.StatusOK, gin.H{"id": user.ID})
+	c.JSON(http.StatusOK, gin.H{"username": user.Username})
 }
