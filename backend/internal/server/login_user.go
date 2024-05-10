@@ -23,7 +23,7 @@ func (s *Server) loginUser(c *gin.Context) {
 		return
 	}
 
-	user, err := s.getUser(c, req.Username)
+	user, err := s.getUserFromUsername(c, req.Username)
 	if user == nil || err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
 		return

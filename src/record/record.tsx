@@ -2,10 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import {RunRecord} from '../runRecord.js';
 import Toast from '../toast/toast.js';
 import './record.css';
+import {getUserFromAuthCookie} from "../utils/getUserNameFromAuth";
 
 
 export function Record() {
 
+  const [username, setUsername] = useState('');
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [distance, setDistance] = useState();
@@ -14,6 +16,18 @@ export function Record() {
   const [notes, setNotes] = useState('');
   const [location, setLocation] = useState('');
   const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    async function loadUserData() {
+      const userData = await getUserFromAuthCookie();
+      if (userData && userData.username) {
+        setUsername(userData.username);
+      } else {
+        console.error('No user data found or no username specified');
+      }
+    }
+    loadUserData();
+  }, []);
 
   const socketRef = useRef(null);
 
@@ -55,7 +69,6 @@ export function Record() {
   async function submit(event) {
     event.preventDefault(); 
 
-    const username = localStorage.getItem("username");
     const record = new RunRecord(new Date(date).toISOString(), distance, duration, runType, notes, username, title, location);
 
     try {

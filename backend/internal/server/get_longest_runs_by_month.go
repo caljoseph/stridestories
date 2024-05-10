@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -8,6 +9,8 @@ import (
 	"strconv"
 	"time"
 )
+
+var ErrInvalidDateParameters = errors.New("invalid date parameters")
 
 type getLeaderboardResponse struct {
 	RunsList []leaderBoardRun `json:"runsList"`
@@ -19,6 +22,12 @@ func (s *Server) getLongestRunsByMonth(c *gin.Context) {
 	if month == "" || year == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "month and year are required",
+		})
+		return
+	}
+	if err := validateMonthAndYear(month, year); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
 		})
 		return
 	}
@@ -71,4 +80,24 @@ func getMonthFilterAndOptions(month string, year string) (bson.M, *options.FindO
 	}
 	opt := options.Find().SetSort(bson.D{{"distance", -1}}).SetLimit(10)
 	return filter, opt, nil
+}
+
+func validateMonthAndYear(month string, year string) error {
+	monthInt, err := strconv.Atoi(month)
+	if err != nil {
+		return err
+	}
+	yearInt, err := strconv.Atoi(year)
+	if err != nil {
+		return err
+	}
+
+	if monthInt < 1 || monthInt > 12 {
+		return ErrInvalidDateParameters
+	}
+	if yearInt < 1970 {
+		return ErrInvalidDateParameters
+	}
+
+	return nil
 }

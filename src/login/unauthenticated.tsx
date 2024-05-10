@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import './unauthenticated.css';
 
 interface UnauthenticatedProps {
-    onLogin: (loginUserName: string) => void
+    onLogin: () => void
 }
 
 export function Unauthenticated(props: UnauthenticatedProps) {
@@ -34,10 +34,9 @@ export function Unauthenticated(props: UnauthenticatedProps) {
           "username" : userNameInput.value,
           "password" : passwordInput.value
         };
-      
+
         if (await login(body)) {
-          localStorage.setItem('username', body.username);
-          props.onLogin(body.username);
+          props.onLogin();
 
         } else {
           document.getElementById("username-error").innerText = "";
@@ -77,8 +76,8 @@ export function Unauthenticated(props: UnauthenticatedProps) {
         };
       
         if (await register(body)) {
-          localStorage.setItem('username', body.username);
-          props.onLogin(body.username);
+          // localStorage.setItem('username', body.username);
+          props.onLogin();
         } else {
           document.getElementById("username-error").innerText = "";
           userNameInput.classList.add("is-invalid");

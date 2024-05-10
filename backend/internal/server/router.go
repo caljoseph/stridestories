@@ -19,6 +19,7 @@ func NewRouter(s *Server) *gin.Engine {
 
 	//r.GET("/ws", s.handleWebsocket)
 
+	private.GET("/users/auth", s.getUserByAuth)
 	private.POST("/runs", s.postRun)
 	private.PATCH("/users", s.updateBlog)
 
@@ -30,6 +31,7 @@ func NewRouter(s *Server) *gin.Engine {
 	api.GET("/runs/:username", s.getRunsByUser)
 	api.GET("/runs/longest_runs_by_month", s.getLongestRunsByMonth)
 	api.GET("/users/:username", s.getUserByUsername)
+
 	api.GET("/runs/longest_total_distance_by_month", s.getLongestTotalDistanceByMonth)
 
 	return r

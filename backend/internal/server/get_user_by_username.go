@@ -25,7 +25,7 @@ func (s *Server) getUserByUsername(c *gin.Context) {
 		})
 		return
 	}
-	user, err := s.getUser(c, username)
+	user, err := s.getUserFromUsername(c, username)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			c.JSON(http.StatusNotFound, gin.H{

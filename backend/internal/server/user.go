@@ -25,7 +25,7 @@ type user struct {
 	MemberSince primitive.DateTime `bson:"member_since"`
 }
 
-func (s *Server) getUser(c *gin.Context, username string) (*user, error) {
+func (s *Server) getUserFromUsername(c *gin.Context, username string) (*user, error) {
 	var user user
 
 	if err := s.db.Collection(usersCollectionName).FindOne(c, bson.M{"username": username}).Decode(&user); err != nil {
@@ -33,8 +33,16 @@ func (s *Server) getUser(c *gin.Context, username string) (*user, error) {
 	}
 	return &user, nil
 }
+func (s *Server) getUserFromAuthToken(c *gin.Context, authToken string) (*user, error) {
+	var user user
+
+	if err := s.db.Collection(authCollectionName).FindOne(c, bson.M{"auth": authToken}).Decode(&user); err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
 func (s *Server) createUser(c *gin.Context, username string, password string) (*user, error) {
-	if user, _ := s.getUser(c, username); user != nil {
+	if user, _ := s.getUserFromUsername(c, username); user != nil {
 		return nil, ErrExistingUser
 	}
 

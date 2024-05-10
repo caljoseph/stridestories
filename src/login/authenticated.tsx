@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUserFromAuthCookie } from '../utils/getUserNameFromAuth.ts';
 
 
 import './authenticated.css';
@@ -11,43 +12,39 @@ interface AuthenticatedProps {
 
 export function Authenticated(props :AuthenticatedProps) {
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    const username = localStorage.getItem('username');
-    let userParagraph = document.getElementById("user");
-    if (userParagraph) {
-        if(username) {
-            userParagraph.textContent = 'Hello ' + username + '!';
-        } else {
-            userParagraph.textContent = "Username empty (but hello anyway!)"
+
+useEffect(() => {
+    async function fetchUserData() {
+        const userData = await getUserFromAuthCookie();  // Wait for the Promise to resolve
+        let userParagraph = document.getElementById("user");
+        if (userParagraph) {
+            if (userData && userData.Username) {
+                userParagraph.textContent = 'Hello ' + userData.Username + '!';
+            } else {
+                userParagraph.textContent = "Username empty (but hello anyway!)"
+            }
         }
     }
-  }, []);
+
+    fetchUserData();  // Call the async function within useEffect
+}, []);
 
 
 
 async function logout() {
-    const username = localStorage.getItem('username');
-    if (username) {
-        try {
-            const response = await fetch('/api/logout', {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                throw new Error('Logout failed with status: ' + response.status);
-            }
-            console.log('Logged out successfully');
-            localStorage.removeItem('username');
-            props.onLogout();
-        } catch (error) {
-            console.error('Error logging out:', error);
+    try {
+        const response = await fetch('/api/logout', {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error('Logout failed with status: ' + response.status);
         }
-    } else {
-        console.error('Username not found in localStorage');
+        console.log('Logged out successfully');
+        props.onLogout();
+    } catch (error) {
+        console.error('Error logging out:', error);
     }
 }
-
-
 
 
   return (

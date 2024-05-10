@@ -20,6 +20,13 @@ func (s *Server) getLongestTotalDistanceByMonth(c *gin.Context) {
 		return
 	}
 
+	if err := validateMonthAndYear(month, year); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
 	monthInt, err := strconv.Atoi(month)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid month format"})

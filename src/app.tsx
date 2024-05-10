@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { AuthState } from './login/authState.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
@@ -12,9 +12,31 @@ import { About } from './about/about';
 
 
 export default function App() {
-    const [username, setUserName] = React.useState(localStorage.getItem('username') || '');
-    const currentAuthState = username ? AuthState.Authenticated : AuthState.Unauthenticated;
-    const [authState, setAuthState] = React.useState(currentAuthState);
+    const [authState, setAuthState] = useState(AuthState.Unauthenticated);
+
+    useEffect(() => {
+         console.log("useEffect triggered");
+
+        checkAuthStatus()
+    }, []);
+
+    async function checkAuthStatus() {
+        try {
+            const response = await fetch('api/private/users/auth', {
+                method: 'GET',
+                credentials: 'include',  // Necessary to send the cookie
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            if (!response.ok) throw new Error('Failed to validate auth');
+            const data = await response.json();
+            setAuthState(data ? AuthState.Authenticated : AuthState.Unauthenticated);
+        } catch (error) {
+            console.error('Error checking auth status:', error);
+        }
+    }
 
     return (
         <BrowserRouter>

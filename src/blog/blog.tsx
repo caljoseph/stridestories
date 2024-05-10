@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './blog.css';
+import { getUserFromAuthCookie } from '../utils/getUserNameFromAuth.ts';
+
 
 
 export function Blog() {
   const [runRecords, setRunRecords] = useState([]);
   const [monthInfo, setMonthInfo] = useState([new Date().getMonth(), new Date().getFullYear()]);
-  const username = localStorage.getItem("username");
+  const [username, setUsername] = useState('');
   const [location, setLocation] = useState('');
   const [bio, setBio] = useState('');
   const [goals, setGoals] = useState([]);
@@ -21,7 +23,21 @@ export function Blog() {
   const locationRef = useRef(null);
 
   useEffect(() => {
-    const fetchRuns = async () => {
+    async function loadUserData() {
+      const userData = await getUserFromAuthCookie();
+      if (userData && userData.Username) {
+        setUsername(userData.Username);
+      } else {
+        console.error('No user data found or no username specified');
+      }
+    }
+    loadUserData();
+  }, []);
+
+
+  useEffect(() => {
+    async function fetchRuns() {
+      if (!username) return; // Do not fetch runs if username is not set
       try {
         const response = await fetch(`/api/runs/${username}?month=${monthInfo[0] + 1}&year=${monthInfo[1]}`);
         if (!response.ok) {
@@ -31,26 +47,30 @@ export function Blog() {
         console.log("Runs loaded successfully");
         setRunRecords(data.runsList);
       } catch (error) {
-        console.error("Couldn't load Runs" + (error as Error).message);
+        console.error("Couldn't load Runs: " + error.message);
       }
-    };
+    }
     fetchRuns();
-  }, [username, monthInfo]);
-  
+  }, [username, monthInfo]); // Dependency on username
+
   useEffect(() => {
-    const fetchBlogInfo = async () => {
-        const username = localStorage.getItem("username");
+    async function fetchBlogInfo() {
+      if (!username) return; // Do not fetch blog info if username is not set
+      try {
         const response = await fetch(`/api/users/${username}`);
         if (response.ok) {
-            const data = await response.json();
-            setLocation(data.location || '');
-            setBio(data.bio || '');
-            setGoals(data.goals || []);
-            setMemberSince(data.member_since ? new Date(data.member_since).toLocaleDateString() : 'Before this feature was implemented :)');
-          }
-    };
+          const data = await response.json();
+          setLocation(data.location || '');
+          setBio(data.bio || '');
+          setGoals(data.goals || []);
+          setMemberSince(data.member_since ? new Date(data.member_since).toLocaleDateString() : 'Before this feature was implemented :)');
+        }
+      } catch (error) {
+        console.error("Couldn't load blog info: " + error.message);
+      }
+    }
     fetchBlogInfo();
-}, []);
+  }, [username]); // Dependency on username
 
   const handleEdit = () => {
     setOriginalLocation(location);
@@ -67,7 +87,7 @@ export function Blog() {
   };
 
   const handleSave = async () => {
-    const username = localStorage.getItem("username");
+
     try {
       const response = await fetch('/api/private/users', {
         method: 'PATCH',
