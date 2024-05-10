@@ -31,7 +31,7 @@ export function Blog() {
         console.log("Runs loaded successfully");
         setRunRecords(data.runsList);
       } catch (error) {
-        console.error("Couldn't load runs", error.message);
+        console.error("Couldn't load Runs" + (error as Error).message);
       }
     };
     fetchRuns();
@@ -43,10 +43,10 @@ export function Blog() {
         const response = await fetch(`/api/users/${username}`);
         if (response.ok) {
             const data = await response.json();
-            setLocation(data.Location || '');
-            setBio(data.Bio || '');
-            setGoals(data.Goals || []);
-            setMemberSince(data.MemberSince ? new Date(data.MemberSince).toLocaleDateString() : 'Before this feature was implemented :)');
+            setLocation(data.location || '');
+            setBio(data.bio || '');
+            setGoals(data.goals || []);
+            setMemberSince(data.member_since ? new Date(data.member_since).toLocaleDateString() : 'Before this feature was implemented :)');
           }
     };
     fetchBlogInfo();
@@ -221,7 +221,7 @@ export function Blog() {
           {Array.isArray(runRecords) && runRecords.map((record, index) => (
               <div key={index} className="blog-entry">
                 <div className="entry-date-location">
-                  <p>{new Date(record.date).toLocaleDateString()}</p>
+                  <p>{new Date(record.date).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
                   <p>{record.location}</p>
                 </div>
                 <div className="entry-title">

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {RunRecord} from '../runRecord.js';
-import Toast from '../toast/toast.jsx';
+import Toast from '../toast/toast.js';
 import './record.css';
 
 

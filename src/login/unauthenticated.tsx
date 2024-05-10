@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useRef } from 'react';
+
 import Button from 'react-bootstrap/Button';
 
 import './unauthenticated.css';
 
-export function Unauthenticated(props) {
+interface UnauthenticatedProps {
+    onLogin: (loginUserName: string) => void
+}
+
+export function Unauthenticated(props: UnauthenticatedProps) {
     async function validateAndLogin() {
         const userNameInput = document.querySelector("#name");
         const passwordInput = document.querySelector("#password");

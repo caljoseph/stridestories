@@ -25,12 +25,12 @@ export default function App() {
                     <ul className="menu-bar">
                         { authState === AuthState.Authenticated && (
                         <li id="login">
-                            < NavLink to=''>Home</NavLink>
+                            < NavLink to='/'>Home</NavLink>
                         </li>
                         )}
                         { authState === AuthState.Unauthenticated && (
                         <li id="login">
-                            < NavLink to=''>Login</NavLink>
+                            < NavLink to='/'>Login</NavLink>
                         </li>
                         )}
 
@@ -57,19 +57,16 @@ export default function App() {
                     </nav>
                 </header>
                 <Routes>
-                <Route
+                    <Route
                     path='/'
                     element={
                          <Login
-                            username={username}
                             authState={authState}
-                            onAuthChange={(username, authState) => {
+                            onAuthChange={(authState) => {
                                 setAuthState(authState);
-                                setUserName(username);
                             }}
                         />
                         }
-                        exact
                     />
                     <Route path='/blog' element={<Blog />} />
                     <Route path='/leaderboard' element={<Leaderboard />} />

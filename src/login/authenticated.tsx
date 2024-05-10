@@ -4,36 +4,47 @@ import { useNavigate } from 'react-router-dom';
 
 import './authenticated.css';
 
+interface AuthenticatedProps {
+    onLogout: () => void;
+}
 
-export function Authenticated(props) {
+
+export function Authenticated(props :AuthenticatedProps) {
   const navigate = useNavigate();
   
   useEffect(() => {
     const username = localStorage.getItem('username');
-    var userParagraph = document.getElementById("user");
-    if(username) {
-      userParagraph.textContent = 'Hello ' + username + '!'; 
-    } else {
-      userParagraph.textContent = "Username empty (but hello anyway!)"
+    let userParagraph = document.getElementById("user");
+    if (userParagraph) {
+        if(username) {
+            userParagraph.textContent = 'Hello ' + username + '!';
+        } else {
+            userParagraph.textContent = "Username empty (but hello anyway!)"
+        }
     }
   }, []);
+
+
 
 async function logout() {
     const username = localStorage.getItem('username');
     if (username) {
         try {
-            await fetch('/api/logout', {
+            const response = await fetch('/api/logout', {
                 method: 'DELETE'
             });
+            if (!response.ok) {
+                throw new Error('Logout failed with status: ' + response.status);
+            }
             console.log('Logged out successfully');
+            localStorage.removeItem('username');
+            props.onLogout();
         } catch (error) {
             console.error('Error logging out:', error);
         }
     } else {
         console.error('Username not found in localStorage');
     }
-    localStorage.removeItem('username');
-    props.onLogout();
 }
 
 
