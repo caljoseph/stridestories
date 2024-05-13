@@ -7,21 +7,21 @@ import {getUserFromAuthCookie} from "../utils/getUserNameFromAuth";
 
 export function Record() {
 
-  const [username, setUsername] = useState('');
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [distance, setDistance] = useState();
-  const [duration, setDuration] = useState();
-  const [runType, setRunType] = useState('Jog'); 
-  const [notes, setNotes] = useState('');
-  const [location, setLocation] = useState('');
-  const [showToast, setShowToast] = useState(false);
+  const [username, setUsername] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [distance, setDistance] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
+  const [runType, setRunType] = useState<string>('Jog'); 
+  const [notes, setNotes] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  const [showToast, setShowToast] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadUserData() {
       const userData = await getUserFromAuthCookie();
-      if (userData && userData.username) {
-        setUsername(userData.username);
+      if (userData && userData.Username) {
+        setUsername(userData.Username);
       } else {
         console.error('No user data found or no username specified');
       }
@@ -31,72 +31,83 @@ export function Record() {
 
   const socketRef = useRef(null);
 
-  useEffect(() => {
-    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    socketRef.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
+  // useEffect(() => {
+  //   const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  //   socketRef.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
   
-    socketRef.current.onopen = function(event) {
-      console.log("Websocket opened");
-    };
+  //   socketRef.current.onopen = function(event) {
+  //     console.log("Websocket opened");
+  //   };
   
-    socketRef.current.onmessage = function(event) {
-      console.log("Message from server: ", event.data);
-    };
+  //   socketRef.current.onmessage = function(event) {
+  //     console.log("Message from server: ", event.data);
+  //   };
   
-    socketRef.current.onerror = function(error) {
-      console.error("WebSocket error: ", error);
-    };
+  //   socketRef.current.onerror = function(error) {
+  //     console.error("WebSocket error: ", error);
+  //   };
 
-    return () => {
-      if(socketRef.current) {
-        socketRef.current.close();
-      }
-    };
-  }, []); 
+  //   return () => {
+  //     if(socketRef.current) {
+  //       socketRef.current.close();
+  //     }
+  //   };
+  // }, []); 
   
-  const handleTitleChange = (e) => setTitle(e.target.value);
-  const handleDateChange = (e) => setDate(e.target.value);
-  const handleDistanceChange = (e) => {
-    setDistance(e.target.value ? parseFloat(e.target.value) : undefined);
+  const handleTitleChange = (e : React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
+  const handleDateChange = (e : React.ChangeEvent<HTMLInputElement>) => setDate(e.target.value);
+  const handleDistanceChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setDistance(e.target.value ? parseFloat(e.target.value) : 0);
   };
-  const handleDurationChange = (e) => {
-    setDuration(e.target.value ? parseInt(e.target.value, 10) : undefined);
+  const handleDurationChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setDuration(e.target.value ? parseInt(e.target.value, 10) : 0);
   }
-  const handleRunTypeChange = (e) => setRunType(e.target.value);
-  const handleNotesChange = (e) => setNotes(e.target.value);
-  const handleLocationChange = (e) => setLocation(e.target.value);
+  const handleRunTypeChange = (e : React.ChangeEvent<HTMLSelectElement>) => setRunType(e.target.value);
+  const handleNotesChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => setNotes(e.target.value);
+  const handleLocationChange = (e : React.ChangeEvent<HTMLInputElement>) => setLocation(e.target.value);
 
-  async function submit(event) {
+  async function submit(event : React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); 
 
-    const record = new RunRecord(new Date(date).toISOString(), distance, duration, runType, notes, username, title, location);
-
-    try {
-      if(socketRef.current) {
-        socketRef.current.send(JSON.stringify({ type: 'newRunSubmitted' }));
+    if (date && distance && duration && notes && username && title && location) {
+      const run = new RunRecord(
+        new Date(date).toISOString(),
+        distance,
+        duration,
+        runType,
+        notes,
+        username,
+        title,
+        location
+      );
+      try {
+        await postRun("/api/private/runs", run);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 10000); 
+  
+        setTitle('');
+        setDate('');
+        setDistance(0);
+        setDuration(0);
+        setRunType('Jog'); 
+        setNotes('');
+        setLocation('');
+      } catch (error : any) {
+        console.error("Couldn't add run", error.message);
       }
-      await postRun("/api/private/runs", record);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 10000); 
+    } else {
+      console.log("missing fields");
 
-      setTitle('');
-      setDate('');
-      setDistance("");
-      setDuration("");
-      setRunType('Jog'); 
-      setNotes('');
-      setLocation('');
-    } catch (error) {
-      console.error("Couldn't add run", error.message);
     }
+    
   }
   
-  async function postRun(url, data) {
+  async function postRun(url : string, run : RunRecord) {
       console.log("Sending POST request...");
       const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
+          body: JSON.stringify(run),
       });
       if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

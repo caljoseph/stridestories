@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './leaderboard.css';
+import { RunRecord } from '../runRecord';
 
 
 export function Leaderboard() {
@@ -10,33 +11,33 @@ export function Leaderboard() {
   const [monthInfo, setMonthInfo] = useState([new Date().getMonth(), new Date().getFullYear()]);
 
 // websockets
-  useEffect(() => {
-    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    socketRef.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
+  // useEffect(() => {
+  //   const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  //   socketRef.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
   
-    socketRef.current.onopen = function(event) {
-      console.log("Websocket opened");
-    };
+  //   socketRef.current.onopen = function(event) {
+  //     console.log("Websocket opened");
+  //   };
   
-    socketRef.current.onmessage = function(event) {
-      const message = JSON.parse(event.data);
-      if (message.type === 'runsUpdate') {
-      loadRuns()
-      } else {
-        console.log("Message from server: ", event.data);
-      }
-    };
+  //   socketRef.current.onmessage = function(event) {
+  //     const message = JSON.parse(event.data);
+  //     if (message.type === 'runsUpdate') {
+  //     loadRuns()
+  //     } else {
+  //       console.log("Message from server: ", event.data);
+  //     }
+  //   };
   
-    socketRef.current.onerror = function(error) {
-      console.error("WebSocket error: ", error);
-    };
+  //   socketRef.current.onerror = function(error) {
+  //     console.error("WebSocket error: ", error);
+  //   };
 
-    return () => {
-      if(socketRef.current) {
-        socketRef.current.close();
-      }
-    };
-  }, []); 
+  //   return () => {
+  //     if(socketRef.current) {
+  //       socketRef.current.close();
+  //     }
+  //   };
+  // }, []); 
 
   useEffect(() => {
     const getLongestTotalDistanceByMonth = async () => {
@@ -48,7 +49,7 @@ export function Leaderboard() {
         const data = await response.json();
         console.log("Runs loaded successfully");
         setLongestTotalDistanceByMonth(data.runsList);
-      } catch (error) {
+      } catch (error : any) {
         console.error("Couldn't load runs", error.message);
       }
     };
@@ -64,7 +65,7 @@ export function Leaderboard() {
         const data = await response.json();
         console.log("Runs loaded successfully");
         setLongestRunsByMonth(data.runsList);
-      } catch (error) {
+      } catch (error : any) {
         console.error("Couldn't load runs", error.message);
       }
     };
@@ -72,7 +73,7 @@ export function Leaderboard() {
   }, [monthInfo]);
 
 
-  const updateMonthInfo = (increment) => {
+  const updateMonthInfo = (increment : number) => {
     setMonthInfo(([month, year]) => {
       let newMonth = (month + increment) % 12;
       newMonth = (newMonth + 12) % 12;
@@ -102,7 +103,7 @@ export function Leaderboard() {
               </thead>
               <tbody id="total-distance-data">
 
-              {Array.isArray(longestTotalDistanceByMonth) && longestTotalDistanceByMonth.map((record, index) => (
+              {Array.isArray(longestTotalDistanceByMonth) && longestTotalDistanceByMonth.map((record : RunRecord, index : number) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td className="username-field">{record.username}</td>
@@ -123,7 +124,7 @@ export function Leaderboard() {
                   </tr>
               </thead>
               <tbody id="longest-run-data">
-              {Array.isArray(longestRunsByMonth) && longestRunsByMonth.map((record, index) => (
+              {Array.isArray(longestRunsByMonth) && longestRunsByMonth.map((record : RunRecord, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td className="username-field">{record.username}</td>
