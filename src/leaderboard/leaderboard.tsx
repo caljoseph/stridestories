@@ -1,60 +1,79 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './leaderboard.css';
+import { RunRecord } from '../runRecord';
 
 
 export function Leaderboard() {
   const socketRef = useRef(null);
   const [allRunRecords, setAllRunRecords] = useState([]);
+  const [longestRunsByMonth, setLongestRunsByMonth] = useState([])
+  const [longestTotalDistanceByMonth, setLongestTotalDistanceByMonth] = useState([])
   const [monthInfo, setMonthInfo] = useState([new Date().getMonth(), new Date().getFullYear()]);
 
 // websockets
-  useEffect(() => {
-    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    socketRef.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
+  // useEffect(() => {
+  //   const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  //   socketRef.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
   
-    socketRef.current.onopen = function(event) {
-      console.log("Websocket opened");
-    };
+  //   socketRef.current.onopen = function(event) {
+  //     console.log("Websocket opened");
+  //   };
   
-    socketRef.current.onmessage = function(event) {
-      const message = JSON.parse(event.data);
-      if (message.type === 'runsUpdate') {
-      loadRuns()
-      } else {
-        console.log("Message from server: ", event.data);
-      }
-    };
+  //   socketRef.current.onmessage = function(event) {
+  //     const message = JSON.parse(event.data);
+  //     if (message.type === 'runsUpdate') {
+  //     loadRuns()
+  //     } else {
+  //       console.log("Message from server: ", event.data);
+  //     }
+  //   };
   
-    socketRef.current.onerror = function(error) {
-      console.error("WebSocket error: ", error);
-    };
+  //   socketRef.current.onerror = function(error) {
+  //     console.error("WebSocket error: ", error);
+  //   };
 
-    return () => {
-      if(socketRef.current) {
-        socketRef.current.close();
-      }
-    };
-  }, []); 
+  //   return () => {
+  //     if(socketRef.current) {
+  //       socketRef.current.close();
+  //     }
+  //   };
+  // }, []); 
 
   useEffect(() => {
-    const sendGetRequest = async () => {
+    const getLongestTotalDistanceByMonth = async () => {
       try {
-        const response = await fetch("/api/runs");
+        const response = await fetch(`/api/runs/longest_total_distance_by_month?month=${monthInfo[0] + 1}&year=${monthInfo[1]}`);
         if (!response.ok) {
           throw new Error(`Sorry! Couldn't get runs: ${response.statusText}`);
         }
         const data = await response.json();
         console.log("Runs loaded successfully");
-        setAllRunRecords(data);
-      } catch (error) {
+        setLongestTotalDistanceByMonth(data.runsList);
+      } catch (error : any) {
         console.error("Couldn't load runs", error.message);
       }
     };
-    sendGetRequest();
-  }, []); 
+    getLongestTotalDistanceByMonth();
+  }, [monthInfo]);
+  useEffect(() => {
+    const getLongestRunsByMonth = async () => {
+      try {
+        const response = await fetch(`/api/runs/longest_runs_by_month?month=${monthInfo[0] + 1}&year=${monthInfo[1]}`);
+        if (!response.ok) {
+          throw new Error(`Sorry! Couldn't get runs: ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log("Runs loaded successfully");
+        setLongestRunsByMonth(data.runsList);
+      } catch (error : any) {
+        console.error("Couldn't load runs", error.message);
+      }
+    };
+    getLongestRunsByMonth();
+  }, [monthInfo]);
 
 
-  const updateMonthInfo = (increment) => {
+  const updateMonthInfo = (increment : number) => {
     setMonthInfo(([month, year]) => {
       let newMonth = (month + increment) % 12;
       newMonth = (newMonth + 12) % 12;
@@ -62,48 +81,6 @@ export function Leaderboard() {
       return [newMonth, newYear];
     });
   };
-
-  const currentMonthRecords = allRunRecords.filter(record => {
-    const recordDate = new Date(record.date);
-    return recordDate.getMonth() === monthInfo[0] && recordDate.getFullYear() === monthInfo[1];
-  });
-
-  const sortedDistance = sortCumulativeUserDistance(currentMonthRecords);
-  const sortedLongest = sortLongestRun(currentMonthRecords);
-
-  function sortLongestRun(records) {
-    return records.sort((a, b) => {
-      const durationA = parseInt(a.distance, 10);
-      const durationB = parseInt(b.distance, 10);
-  
-      return durationB - durationA;
-    });
-  }
-  
-  function sortCumulativeUserDistance(records) {
-    const userDistance = records.reduce((acc, run) => {
-      const distance = parseFloat(run.distance, 10);
-      if (acc[run.username]) {
-        acc[run.username] += distance;
-      } else {
-        acc[run.username] = 0;
-        acc[run.username] += distance;
-      }
-      return acc;
-    }, {});
-  
-    const userDistanceArray = Object.entries(userDistance).map(([username, totalDistance]) => ({
-      username,
-      distance: totalDistance,
-    }));
-  
-    userDistanceArray.sort((a, b) => b.distance - a.distance);
-    return userDistanceArray;
-  }
-
-
-
-
 
 
   return (
@@ -126,12 +103,12 @@ export function Leaderboard() {
               </thead>
               <tbody id="total-distance-data">
 
-              {sortedDistance.slice(0, 10).map((record, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td className="username-field">{record.username}</td>
-                  <td>{record.distance.toFixed(2)}</td>
-                </tr>
+              {Array.isArray(longestTotalDistanceByMonth) && longestTotalDistanceByMonth.map((record : RunRecord, index : number) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td className="username-field">{record.username}</td>
+                    <td>{record.distance.toFixed(2)}</td>
+                  </tr>
               ))}
               </tbody>
           </table>
@@ -147,7 +124,7 @@ export function Leaderboard() {
                   </tr>
               </thead>
               <tbody id="longest-run-data">
-              {sortedLongest.slice(0, 10).map((record, index) => (
+              {Array.isArray(longestRunsByMonth) && longestRunsByMonth.map((record : RunRecord, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td className="username-field">{record.username}</td>

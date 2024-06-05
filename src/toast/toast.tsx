@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './toast.css';
 
-const Toast = ({ show, message, onClose }) => {
+interface ToastProps {
+  show: boolean;
+  message: string;
+  onClose: () => void;
+}
+
+const Toast: React.FC<ToastProps> = ({ show, message, onClose }) => {
   const [shouldClose, setShouldClose] = useState(false);
 
   useEffect(() => {

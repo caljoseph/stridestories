@@ -1,65 +1,86 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './blog.css';
+import { getUserFromAuthCookie } from '../utils/getUserNameFromAuth.ts';
+import { RunRecord } from '../runRecord.js';
+
 
 
 export function Blog() {
-  const [allRunRecords, setAllRunRecords] = useState([]);
+  const [runRecords, setRunRecords] = useState([]);
   const [monthInfo, setMonthInfo] = useState([new Date().getMonth(), new Date().getFullYear()]);
-  const username = localStorage.getItem("username");
+  const [username, setUsername] = useState('');
   const [location, setLocation] = useState('');
   const [bio, setBio] = useState('');
-  const [goals, setGoals] = useState([]);
+  const [goals, setGoals] = useState<string[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [memberSince, setMemberSince] = useState('');
   // New states for edit mode
   const [originalLocation, setOriginalLocation] = useState('');
   const [originalBio, setOriginalBio] = useState('');
-  const [originalGoals, setOriginalGoals] = useState([]);
+  const [originalGoals, setOriginalGoals] = useState<string[]>([]);
 
-  const textAreaRefs = useRef([]);
-  const bioRef = useRef(null);
-  const locationRef = useRef(null);
+  const goalRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
+  const bioRef = useRef<HTMLTextAreaElement | null>(null);
+  const locationRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
-    const sendGetRequest = async () => {
+    async function loadUserData() {
+      const userData = await getUserFromAuthCookie();
+      if (userData && userData.Username) {
+        setUsername(userData.Username);
+      } else {
+        console.error('No authcookie set or no username specified');
+      }
+    }
+    loadUserData();
+  }, []);
+
+
+  useEffect(() => {
+    async function fetchRuns() {
+      if (!username) return; // Do not fetch runs if username is not set
       try {
-        const response = await fetch("/api/runs");
+        const response = await fetch(`/api/runs/${username}?month=${monthInfo[0] + 1}&year=${monthInfo[1]}`);
         if (!response.ok) {
           throw new Error(`Sorry! Couldn't get runs: ${response.statusText}`);
         }
         const data = await response.json();
         console.log("Runs loaded successfully");
-        setAllRunRecords(data.filter(record => record.username === username));
-      } catch (error) {
-        console.error("Couldn't load runs", error.message);
+        setRunRecords(data.runsList);
+      } catch (error : any) {
+        console.error("Couldn't load Runs: " + error.message);
       }
-    };
-    sendGetRequest();
-  }, [username]); 
-  
-  useEffect(() => {
-    const fetchBlogInfo = async () => {
-        const username = localStorage.getItem("username");
-        const response = await fetch(`/api/user/blog-info/${username}`);
-        if (response.ok) {
-            const data = await response.json();
-            setLocation(data.location || '');
-            setBio(data.bio || '');
-            setGoals(data.goals || []);
-            setMemberSince(data.memberSince ? new Date(data.memberSince).toLocaleDateString() : 'Before this feature was implemented :)');
-          }
-    };
-    fetchBlogInfo();
-}, []);
+    }
+    fetchRuns();
+  }, [username, monthInfo]); // Dependency on username
 
-  const handleEdit = () => {
+  useEffect(() => {
+    async function fetchBlogInfo() {
+      if (!username) return; // Do not fetch blog info if username is not set
+      try {
+        const response = await fetch(`/api/users/${username}`);
+        if (response.ok) {
+          const data = await response.json();
+          setLocation(data.location || '');
+          setBio(data.bio || '');
+          setGoals(data.goals || []);
+          setMemberSince(data.member_since ? new Date(data.member_since).toLocaleDateString() : 'Before this feature was implemented :)');
+        }
+      } catch (error : any) {
+        console.error("Couldn't load blog info: " + error.message);
+      }
+    }
+    fetchBlogInfo();
+  }, [username]); // Dependency on username
+
+  const handleEdit = () : void => {
     setOriginalLocation(location);
     setOriginalBio(bio);
     setOriginalGoals([...goals]); 
     setIsEditing(true);
   };
 
-  const handleCancel = () => {
+  const handleCancel = () : void => {
     setLocation(originalLocation);
     setBio(originalBio);
     setGoals(originalGoals);
@@ -67,14 +88,14 @@ export function Blog() {
   };
 
   const handleSave = async () => {
-    const username = localStorage.getItem("username");
+
     try {
-      const response = await fetch('/api/blog-info', {
-        method: 'POST',
+      const response = await fetch('/api/private/users', {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, location, bio, goals }),
+        body: JSON.stringify({ location, bio, goals }),
       });
 
       if (!response.ok) {
@@ -87,20 +108,20 @@ export function Blog() {
     }
   };
 
-  const addGoal = () => setGoals([...goals, '']);
-  const updateGoal = (index, value) => {
+  const addGoal = () : void => setGoals([...goals, '']);
+  const updateGoal = (index : number, value : string) : void => {
     const updatedGoals = [...goals];
     updatedGoals[index] = value;
     setGoals(updatedGoals);
   };
-  const removeGoal = (index) => {
+  const removeGoal = (index : number) : void => {
     const updatedGoals = [...goals];
     updatedGoals.splice(index, 1);
     setGoals(updatedGoals);
   };
 
 
-  const updateMonthInfo = (increment) => {
+  const updateMonthInfo = (increment : number) : void => {
     setMonthInfo(([month, year]) => {
       let newMonth = (month + increment) % 12;
       newMonth = (newMonth + 12) % 12;
@@ -109,26 +130,21 @@ export function Blog() {
     });
   };
 
-  const calculatePace = (duration, distance) => {
+  const calculatePace = (duration : number, distance : number) : string => {
     const pace = duration / distance;
     const paceMinutes = Math.floor(pace);
     const paceSeconds = Math.round((pace - paceMinutes) * 60);
     return `${paceMinutes}:${paceSeconds < 10 ? '0' : ''}${paceSeconds} min/mi`;
   };
 
-  const capitalizeUsername = (username) => username.charAt(0).toUpperCase() + username.slice(1);
+  const capitalizeUsername = (username : string) => username.charAt(0).toUpperCase() + username.slice(1);
 
-  // Restrict records to current month
-  const currentMonthRecords = allRunRecords.filter(record => {
-    const recordDate = new Date(record.date);
-    return recordDate.getMonth() === monthInfo[0] && recordDate.getFullYear() === monthInfo[1];
-  });
   
   useEffect(() => {
-    textAreaRefs.current.forEach(textArea => {
+    goalRefs.current.forEach((textArea) => {
       if (textArea) {
-        textArea.style.height = "0px";  
-        textArea.style.height = textArea.scrollHeight + 8 + "px";
+        textArea.style.height = "0px";
+        textArea.style.height = `${textArea.scrollHeight + 8}px`;
       }
     });
   }, [goals, isEditing]);
@@ -184,7 +200,7 @@ export function Blog() {
               <div className='goal-container' key={index}>
                 {isEditing ? (
                   <textarea
-                    ref={el => textAreaRefs.current[index] = el}
+                    ref={el => goalRefs.current[index] = el}
                     value={goal}
                     onChange={(e) => updateGoal(index, e.target.value)}
                     className="editable"
@@ -192,7 +208,7 @@ export function Blog() {
                   />
                 ) : (
                   <textarea
-                    ref={el => textAreaRefs.current[index] = el}
+                    ref={el => goalRefs.current[index] = el}
                     value={goal}
                     readOnly
                     className="readonly"
@@ -223,37 +239,37 @@ export function Blog() {
           <button id="next-month" onClick={() => updateMonthInfo(1)}>Next Month</button>
         </div>
         <div className="blog-content">
-          {currentMonthRecords.map((record, index) => (
-            <div key={index} className="blog-entry">
-              <div className="entry-date-location">
-                <p>{record.date}</p>
-                <p>{record.location}</p>
-              </div>
-              <div className="entry-title">
-                <h3>{record.title}</h3>
-              </div>
-              <div className="entry-description">
-                <p>{record.notes}</p>
-              </div>
-              <div className="entry-stats">
-                <table>
-                  <thead>
+          {Array.isArray(runRecords) && runRecords.map((record : RunRecord, index : number) => (
+              <div key={index} className="blog-entry">
+                <div className="entry-date-location">
+                  <p>{new Date(record.date).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
+                  <p>{record.location}</p>
+                </div>
+                <div className="entry-title">
+                  <h3>{record.title}</h3>
+                </div>
+                <div className="entry-description">
+                  <p>{record.notes}</p>
+                </div>
+                <div className="entry-stats">
+                  <table>
+                    <thead>
                     <tr>
                       <th id="duration">Duration</th>
                       <th id="pace">Pace</th>
                       <th id="distance">Distance</th>
                     </tr>
-                  </thead>
-                  <tbody>
+                    </thead>
+                    <tbody>
                     <tr>
                       <td id="duration-info">{record.duration} mins</td>
                       <td id="pace-info">{calculatePace(record.duration, record.distance)}</td>
                       <td id="distance-info">{record.distance} miles</td>
                     </tr>
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
           ))}
         </div>
       </div>

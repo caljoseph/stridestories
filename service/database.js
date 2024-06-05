@@ -1,9 +1,10 @@
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
-const config = require('./dbConfig.json');
+// const config = require('./dbConfig.json');
 
-const url = `mongodb+srv://${config.username}:${config.password}@${config.hostname}`;
+// const url = `mongodb+srv://${config.username}:${config.password}@${config.hostname}`;
+const url = "mongodb://localhost:27017/"
 const client = new MongoClient(url);
 const db = client.db('startup');
 
